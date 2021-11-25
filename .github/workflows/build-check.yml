@@ -1,0 +1,12 @@
+name: build check
+'on':
+  push:
+    branches-ignore:
+      - main
+jobs:
+  build_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci && npm install -g @quasar/cli
+      - run: quasar build
