@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "public",
+    "site": "member-ihuay",
+    "public": "dist/spa",
     "ignore": [
       "firebase.json",
       "**/.*",
