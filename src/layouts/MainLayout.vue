@@ -40,7 +40,6 @@
           <q-item-section avatar>
             <q-icon name="login" />
           </q-item-section>
-
           <q-item-section>
             Login (เข้าสู่ระบบ)
           </q-item-section>
@@ -85,8 +84,15 @@
       </q-img>
     </q-drawer>
 
-    <q-page-container>
-      <router-view />
+    <q-page-container
+    >
+      <transition
+      mode="out-in"
+      enter-active-class="animate__animated animate__fadeIn "
+      leave-active-class="animate__animated animate__fadeOutDown"
+      >
+        <router-view/>
+      </transition>
     </q-page-container>
   </q-layout>
 </template>

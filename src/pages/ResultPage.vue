@@ -44,23 +44,6 @@ export default defineComponent({
   },
   data () {
     return {
-      GovermentLotto: [
-        {
-          key: 'lotto_thai_gorverment',
-          name: 'หวยรัฐบาลไทย',
-          result_first_prize: '123232',
-          result_run_down: ['2', '4'],
-          result_run_up: ['6', '2', '1'],
-          result_three_back_1: '831',
-          result_three_back_2: '261',
-          result_three_front_1: '512',
-          result_three_front_2: '734',
-          result_three_tod: ['750', '705', '570', '507', '075', '057'],
-          result_three_up: '750',
-          result_two_down: '24',
-          result_two_up: '41'
-        }
-      ],
       pagination: {
         sortBy: 'name',
         descending: false,
@@ -72,23 +55,29 @@ export default defineComponent({
       queryDate: moment().locale('th').format('DD-MM-YYYY')
     }
   },
-  created () {
-    this.setupLogic()
+  async created () {
+    await this.setupLogic()
   },
   methods: {
-    setupLogic (val) {
+    async setupLogic (val) {
       let date = documentDate()
       let displayDate = moment().locale('th')
       if (val) {
         date = 'DATE_'.concat(moment(val).format('DD-MM-YYYY'))
         displayDate = moment(val)
       }
-      this.$store.dispatch('Lotto/setIndexLotto', { docDate: date, displayDocDate: moment(displayDate).format('DD/MM/YYYY') })
-      this.$store.dispatch('Lotto/setThaiStockLotto', { docDate: date })
-      this.$store.dispatch('Lotto/setForeignLotto', { docDate: date })
-      this.$store.dispatch('Lotto/setJubyeekee', { docDate: date })
-      this.$store.dispatch('Lotto/setGovernmentLotto', { docDate: Lotto_create_on_First_and_Sixteen_Date() })
-      this.$store.dispatch('Lotto/setBankLotto', { baccDate: Lotto_create_on_Frist(), gsbDate: Lotto_create_on_First_and_Sixteen_Date() })
+      await this.$store.dispatch('Lotto/setIndexLotto', {
+        docDate: date,
+        displayDocDate: moment(displayDate).format('DD/MM/YYYY')
+      })
+      await this.$store.dispatch('Lotto/setThaiStockLotto', { docDate: date })
+      await this.$store.dispatch('Lotto/setForeignLotto', { docDate: date })
+      await this.$store.dispatch('Lotto/setJubyeekee', { docDate: date })
+      await this.$store.dispatch('Lotto/setGovernmentLotto', { docDate: Lotto_create_on_First_and_Sixteen_Date() })
+      await this.$store.dispatch('Lotto/setBankLotto', {
+        baccDate: Lotto_create_on_Frist(),
+        gsbDate: Lotto_create_on_First_and_Sixteen_Date()
+      })
     },
     refresh_LottoResult (done) {
       this.setupLogic()

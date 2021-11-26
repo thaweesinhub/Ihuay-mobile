@@ -24,7 +24,8 @@ module.exports = configure(function (ctx) {
     boot: [
       'i18n',
       'axios',
-      'firebase'
+      'firebase',
+      'fetchData'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

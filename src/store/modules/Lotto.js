@@ -176,6 +176,7 @@ const actions = {
           Jukyeeke.push({
             name: jukyeekee[roundID].name,
             key: roundID,
+            index: x + 1,
             result_three_up: checkLottoAlreadyHaveResult(jukyeekee[roundID].result_three_up),
             result_two_down: checkLottoAlreadyHaveResult(jukyeekee[roundID].result_two_down)
           })
