@@ -22,5 +22,4 @@
         <preference name="ScrollEnabled" value="true" />
     </platform>
     <allow-navigation href="about:*" />
-    <allow-navigation href="http://192.168.1.100:8080" />
 </widget>

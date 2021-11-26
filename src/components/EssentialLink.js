@@ -30,7 +30,7 @@ export const notLoginList = [
   {
     title: 'Lottory Result (ผลรางวัล)',
     icon: 'emoji_events',
-    link: 'emoji_events'
+    link: 'Result'
   },
   {
     title: 'rule  (กฏกติตา)',
