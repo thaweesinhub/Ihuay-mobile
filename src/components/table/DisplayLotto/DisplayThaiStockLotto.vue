@@ -2,8 +2,8 @@
   <q-table
     grid
     card-class="bg-primary text-white"
-    title="หวยธนาคาร"
-    :rows="bank_lotto_row"
+    title="หวยหุ้นไทย"
+    :rows="ThaiStockLotto_row"
     :columns="LottoColumns"
     row-key="name"
     no-data-label="I didn't find anything for you"
@@ -11,7 +11,7 @@
     hide-header
     hide-bottom
   >
-    <template v-slot:item="props">
+    <template v-slot:item="props" v-if="ThaiStockLotto_row" >
       <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
         <q-card class="">
           <q-card-section class="text-center">
@@ -20,14 +20,14 @@
             <img
               style="width: 30px; height: 20px; margin-top: 1%"
               v-bind:src="
-                          iconPic(props.row.key, `bank`)
+                          iconPic('Thailand', `index`)
                         "
-              :alt="iconPic(props.row.key, `bank`)"
+              :alt="iconPic('Thailand', `index`)"
             />
           </q-card-section>
           <q-separator />
           <q-card-section class="flex flex-center" >
-            <div>3 ตัวบน :  <strong class="text-h6">{{props.row.result_three_up}}</strong></div>
+            <div>3 ตัวบน :  <strong class="text-h6 la-underline">{{props.row.result_three_up}}</strong></div>
             <q-separator vertical spaced></q-separator>
             <div>2 ตัวล่าง : <strong class="text-h6">{{props.row.result_two_down}}</strong></div>
           </q-card-section>
@@ -35,16 +35,18 @@
       </div>
     </template>
     <template v-slot:top>
-      <span class="text-h5">หวยธนาคาร</span>
+      <span class="text-h5">หวยหุ้นไทย</span>
       <q-space />
-      <span class="text-h6">วันที่หวยออกล่าสุด</span>
+      <span class="text-h6">{{selectedDate}} </span>
     </template>
   </q-table>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  name: 'DIsplayBankLotto',
+  name: 'DisplayThaiStockLotto',
   data () {
     return {
       pagination: {
@@ -67,15 +69,17 @@ export default {
         images = require.context('src/assets/countryIcon', false, /\.png$/)
         return images('./' + lottoName + '.png')
       } else if (type === 'bank') {
+        // do something
         images = require.context('src/assets/bankIcon', false, /\.jpeg$/)
         return images('./' + lottoName + '.jpeg')
       }
     }
   },
   computed: {
-    bank_lotto_row () {
-      return this.$store.getters['Lotto/BankLotto']
-    }
+    ...mapGetters({
+      ThaiStockLotto_row: 'LottoResult/ThaiStockLotto',
+      selectedDate: 'LottoResult/selectedDate'
+    })
   }
 }
 </script>

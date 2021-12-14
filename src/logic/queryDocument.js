@@ -1,11 +1,11 @@
-import { collection, doc, getDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, where, query, getDocs } from 'firebase/firestore'
 import moment from 'moment'
 import { db } from '../boot/firebase'
-
 const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
 const ThaiStockLottoCollection = collection(db, 'testLotto')
 const JubyeekeeCollection = collection(db, 'JukyeekeeGameRoom')
+// const Number_memoCollection = collection(db, 'setNumber')
 
 export function documentDate () {
   const format = 'hh:mm:ss'
@@ -92,4 +92,19 @@ export async function getNormalLotto (queryDate) {
     }
   }).catch((error) => { console.log(error) })
   return document
+}
+
+export async function getNumberMemo (player) {
+  const data = []
+  const q = query(collection(db, 'setNumber'), where('player', '==', player))
+  await getDocs(q).catch(err => console.log(err)).then((docSnap) => {
+    if (!docSnap.empty) {
+      docSnap.forEach((doc) => {
+        const obj = doc.data()
+        obj.docID = doc.id
+        data.push(obj)
+      })
+    }
+  })
+  return data
 }

@@ -1,5 +1,5 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { getMessageFromErrorCode } from 'src/logic/handleError'
+import { getMessageFromErrorCode } from 'src/logic/handler'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from 'src/boot/firebase'
 import { Notify } from 'quasar'

@@ -18,25 +18,25 @@ const state = {
 }
 
 const mutations = {
-  'SET_INDEX_LOTTO' (state, payload) {
+  'SET_INDEX_LOTTO_RESULT' (state, payload) {
     state.indexLotto = payload
   },
   'SET_SELECT_LOTTO_DATE' (state, payload) {
     state.selectedDate = payload
   },
-  'SET_GOVERNMENT_LOTTO' (state, payload) {
+  'SET_GOVERNMENT_LOTTO_RESULT' (state, payload) {
     state.governmentLotto = payload
   },
-  'SET_THAI_STOCK_LOTTO' (state, payload) {
+  'SET_THAI_STOCK_LOTTO_RESULT' (state, payload) {
     state.thaiStockLotto = payload
   },
-  'SET_BANK_LOTTO' (state, payload) {
+  'SET_BANK_LOTTO_RESULT' (state, payload) {
     state.bankLotto = payload
   },
-  'SET_FOREIGN_LOTTO' (state, payload) {
+  'SET_FOREIGN_LOTTO_RESULT' (state, payload) {
     state.foreignLotto = payload
   },
-  'SET_JUBYEEKEE_LOTTO' (state, payload) {
+  'SET_JUBYEEKEE_LOTTO_RESULT' (state, payload) {
     state.jubyeekeeLotto = payload
   }
 }
@@ -58,7 +58,7 @@ const actions = {
       }
     }
     commit('SET_SELECT_LOTTO_DATE', payload.displayDocDate)
-    commit('SET_INDEX_LOTTO', Lotto)
+    commit('SET_INDEX_LOTTO_RESULT', Lotto)
   },
   setGovernmentLotto: async ({ commit }, payload) => {
     const lotto = await getNormalLotto(payload.docDate)
@@ -88,7 +88,7 @@ const actions = {
     } else {
       Lotto.push(createDummyGovermentLotto())
     }
-    commit('SET_GOVERNMENT_LOTTO', Lotto)
+    commit('SET_GOVERNMENT_LOTTO_RESULT', Lotto)
   },
   setThaiStockLotto: async ({ commit }, payload) => {
     const lotto = await getThaiStockLotto(payload.docDate)
@@ -105,7 +105,7 @@ const actions = {
         }
       }
     }
-    commit('SET_THAI_STOCK_LOTTO', Lotto)
+    commit('SET_THAI_STOCK_LOTTO_RESULT', Lotto)
   },
   setBankLotto: async ({ commit }, payload) => {
     const baccLotto = await getNormalLotto(payload.baccDate)
@@ -147,7 +147,7 @@ const actions = {
     } else {
       Lotto.push(dummyGSBLotto)
     }
-    commit('SET_BANK_LOTTO', Lotto)
+    commit('SET_BANK_LOTTO_RESULT', Lotto)
   },
   setForeignLotto: async ({ commit }, payload) => {
     const lotto = await getNormalLotto(payload.docDate)
@@ -164,7 +164,7 @@ const actions = {
         }
       }
     }
-    commit('SET_FOREIGN_LOTTO', Lotto)
+    commit('SET_FOREIGN_LOTTO_RESULT', Lotto)
   },
   setJubyeekee: async ({ commit }, payload) => {
     const jukyeekee = await getJubyeekee(payload.docDate)
@@ -183,7 +183,7 @@ const actions = {
         }
       }
     }
-    commit('SET_JUBYEEKEE_LOTTO', Jukyeeke)
+    commit('SET_JUBYEEKEE_LOTTO_RESULT', Jukyeeke)
   }
 }
 

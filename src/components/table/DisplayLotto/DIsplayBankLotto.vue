@@ -2,8 +2,8 @@
   <q-table
     grid
     card-class="bg-primary text-white"
-    title="หวยหุ้นต่างประเทศ"
-    :rows="IndexLotto"
+    title="หวยธนาคาร"
+    :rows="bank_lotto_row"
     :columns="LottoColumns"
     row-key="name"
     no-data-label="I didn't find anything for you"
@@ -20,9 +20,9 @@
             <img
               style="width: 30px; height: 20px; margin-top: 1%"
               v-bind:src="
-                          iconPic(props.row.key, `index`)
+                          iconPic(props.row.key, `bank`)
                         "
-              :alt="iconPic(props.row.key, `index`)"
+              :alt="iconPic(props.row.key, `bank`)"
             />
           </q-card-section>
           <q-separator />
@@ -35,18 +35,16 @@
       </div>
     </template>
     <template v-slot:top>
-      <span class="text-h5">หวยหุ้นต่างประเทศ</span>
+      <span class="text-h5">หวยธนาคาร</span>
       <q-space />
-      <span class="text-h6">{{selectedDate}} </span>
+      <span class="text-h6">วันที่หวยออกล่าสุด</span>
     </template>
   </q-table>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
-  name: 'Lotto',
+  name: 'DIsplayBankLotto',
   data () {
     return {
       pagination: {
@@ -69,17 +67,15 @@ export default {
         images = require.context('src/assets/countryIcon', false, /\.png$/)
         return images('./' + lottoName + '.png')
       } else if (type === 'bank') {
-        // do something
         images = require.context('src/assets/bankIcon', false, /\.jpeg$/)
         return images('./' + lottoName + '.jpeg')
       }
     }
   },
   computed: {
-    ...mapGetters({
-      IndexLotto: 'Lotto/IndexLotto',
-      selectedDate: 'Lotto/selectedDate'
-    })
+    bank_lotto_row () {
+      return this.$store.getters['LottoResult/BankLotto']
+    }
   }
 }
 </script>
