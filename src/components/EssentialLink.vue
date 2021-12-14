@@ -47,7 +47,7 @@ export default defineComponent({
   },
   methods: {
     navigation (path) {
-      this.$router.push({ name: path })
+      this.$router.push({ path: path })
     }
   }
 })

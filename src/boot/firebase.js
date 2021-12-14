@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import 'animate.css'
+
 const firebaseConfig = {
   apiKey: 'AIzaSyDQIcd2GAINbsPHgwFZOYs3tlGA8FTpEFw',
   authDomain: 'statingihuay.firebaseapp.com',

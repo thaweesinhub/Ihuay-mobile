@@ -3,8 +3,13 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', name: 'Result', component: () => import('pages/ResultPage.vue') },
-      { path: 'auth/login', name: 'Login', component: () => import('pages/LoginPage.vue') }
+      {
+        path: '/',
+        redirect: '/result-reward'
+      },
+      { path: '/result-reward', name: 'Result', component: () => import('pages/ResultPage.vue') },
+      { path: '/login', name: 'Login', component: () => import('pages/LoginPage.vue') },
+      { path: '/number-memo', name: 'Number-memo', component: () => import('pages/Number-memo') }
     ]
   },
 

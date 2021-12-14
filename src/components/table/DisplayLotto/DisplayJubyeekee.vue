@@ -156,8 +156,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      jubyeekeeLotto_Row: 'Lotto/JubyeekeeLotto',
-      selectedDate: 'Lotto/selectedDate'
+      jubyeekeeLotto_Row: 'LottoResult/JubyeekeeLotto',
+      selectedDate: 'LottoResult/selectedDate'
     })
   }
 }

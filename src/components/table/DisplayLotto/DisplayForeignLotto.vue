@@ -77,8 +77,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      foreignLotto_row: 'Lotto/ForeignLotto',
-      selectedDate: 'Lotto/selectedDate'
+      foreignLotto_row: 'LottoResult/ForeignLotto',
+      selectedDate: 'LottoResult/selectedDate'
     })
   }
 }

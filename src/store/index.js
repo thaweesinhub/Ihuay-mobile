@@ -4,7 +4,9 @@ import createPersistedState from 'vuex-persistedstate'
 
 import userEntity from './modules/user'
 import appearance from './modules/appearance'
-import Lotto from './modules/Lotto'
+import LottoResult from './modules/Lotto-result'
+import NumberMemo from './modules/number-memo'
+import LottoGame from './modules/Lotto-game'
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -22,7 +24,9 @@ export default store(function (/* { ssrContext } */) {
     modules: {
       appearance,
       userEntity,
-      Lotto
+      LottoResult,
+      NumberMemo,
+      LottoGame
     },
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only

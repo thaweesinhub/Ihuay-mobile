@@ -36,7 +36,7 @@
         />
       </q-list>
         <q-separator/>
-        <q-item clickable v-ripple v-if="!isLogin" v-on:click="navigationPage('Login')">
+        <q-item clickable v-ripple v-if="!isLogin" v-on:click="navigationPage('login')">
           <q-item-section avatar>
             <q-icon name="login" />
           </q-item-section>
@@ -86,17 +86,16 @@
 
     <q-page-container
     >
-      <transition
-      mode="out-in"
-      enter-active-class="animate__animated animate__fadeIn "
-      leave-active-class="animate__animated animate__fadeOutDown"
-      >
-        <router-view/>
-      </transition>
+        <router-view v-slot="{ Component }">
+          <transition
+            enter-active-class="animate__animated  animate__fadeIn"
+          >
+          <component :is="Component"/>
+          </transition>
+        </router-view>
     </q-page-container>
   </q-layout>
 </template>
-
 <script>
 import { useQuasar } from 'quasar'
 import { isLoginList, notLoginList } from 'components/EssentialLink'
@@ -166,7 +165,7 @@ export default defineComponent({
       })
     },
     navigationPage (path) {
-      this.$router.push({ name: path })
+      this.$router.push({ path: `${path}` })
     },
     setThemeAppearance () {
       this.isDarkModeActive = !this.isDarkModeActive

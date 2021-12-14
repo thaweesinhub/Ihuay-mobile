@@ -21,12 +21,12 @@ import { useQuasar } from 'quasar'
 import { defineComponent } from 'vue'
 // eslint-disable-next-line camelcase
 import { documentDate, Lotto_create_on_First_and_Sixteen_Date, Lotto_create_on_Frist } from 'src/logic/queryDocument'
-import DisplayIndex from 'components/table/DisplayIndexLotto'
-import DisplayGovermentLotto from 'components/table/DisplayGovermentLotto'
-import DisplayThaiStockLotto from 'components/table/DisplayThaiStockLotto'
-import DIsplayBankLotto from 'components/table/DIsplayBankLotto'
-import DisplayForeignLotto from 'components/table/DisplayForeignLotto'
-import DisplayJubyeekee from 'components/table/DisplayJubyeekee'
+import DisplayIndex from 'components/table/DisplayLotto/DisplayIndexLotto'
+import DisplayGovermentLotto from 'components/table/DisplayLotto/DisplayGovermentLotto'
+import DisplayThaiStockLotto from 'components/table/DisplayLotto/DisplayThaiStockLotto'
+import DIsplayBankLotto from 'components/table/DisplayLotto/DIsplayBankLotto'
+import DisplayForeignLotto from 'components/table/DisplayLotto/DisplayForeignLotto'
+import DisplayJubyeekee from 'components/table/DisplayLotto/DisplayJubyeekee'
 export default defineComponent({
   name: 'PageIndex',
   components: {
@@ -66,15 +66,15 @@ export default defineComponent({
         date = 'DATE_'.concat(moment(val).format('DD-MM-YYYY'))
         displayDate = moment(val)
       }
-      await this.$store.dispatch('Lotto/setIndexLotto', {
+      await this.$store.dispatch('LottoResult/setIndexLotto', {
         docDate: date,
         displayDocDate: moment(displayDate).format('DD/MM/YYYY')
       })
-      await this.$store.dispatch('Lotto/setThaiStockLotto', { docDate: date })
-      await this.$store.dispatch('Lotto/setForeignLotto', { docDate: date })
-      await this.$store.dispatch('Lotto/setJubyeekee', { docDate: date })
-      await this.$store.dispatch('Lotto/setGovernmentLotto', { docDate: Lotto_create_on_First_and_Sixteen_Date() })
-      await this.$store.dispatch('Lotto/setBankLotto', {
+      await this.$store.dispatch('LottoResult/setThaiStockLotto', { docDate: date })
+      await this.$store.dispatch('LottoResult/setForeignLotto', { docDate: date })
+      await this.$store.dispatch('LottoResult/setJubyeekee', { docDate: date })
+      await this.$store.dispatch('LottoResult/setGovernmentLotto', { docDate: Lotto_create_on_First_and_Sixteen_Date() })
+      await this.$store.dispatch('LottoResult/setBankLotto', {
         baccDate: Lotto_create_on_Frist(),
         gsbDate: Lotto_create_on_First_and_Sixteen_Date()
       })

@@ -12,7 +12,7 @@ export const isLoginList = [
   {
     title: 'Lottory Result (ผลรางวัล)',
     icon: 'emoji_events',
-    link: 'Result'
+    link: 'result-reward'
   },
   {
     title: 'History (โพยหวย)',
@@ -22,7 +22,7 @@ export const isLoginList = [
   {
     title: 'สร้างเลขชุด',
     icon: 'add_circle',
-    link: 'create_group_number'
+    link: 'number-memo'
   }
 ]
 
@@ -30,7 +30,7 @@ export const notLoginList = [
   {
     title: 'Lottory Result (ผลรางวัล)',
     icon: 'emoji_events',
-    link: 'Result'
+    link: 'result-reward'
   },
   {
     title: 'rule  (กฏกติตา)',
@@ -38,9 +38,3 @@ export const notLoginList = [
     link: ''
   }
 ]
-
-// {
-//   title: 'Login (ลงชื่อเข้าใช้)',
-//     icon: 'login',
-//   link: 'Login'
-// },

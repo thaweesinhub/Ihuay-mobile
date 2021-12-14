@@ -78,7 +78,7 @@ export default {
           email: this.mUsername.concat('@email.com'),
           password: this.mPassword
         })
-        this.$router.push({ name: 'Result' })
+        this.$router.push({ path: 'result-reward' })
       }
     }
   }
