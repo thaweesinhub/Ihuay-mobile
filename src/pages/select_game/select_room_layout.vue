@@ -42,7 +42,6 @@ import gorvermentlotto from 'components/select_game_room/gorverment_lotto'
 import bankLotto from 'components/select_game_room/bankLotto'
 import thaiIndexLotto from 'components/select_game_room/thaiIndexLotto'
 import JubyeekeeLotto from 'components/select_game_room/JubyeekeeLotto'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'select_room_layout',
