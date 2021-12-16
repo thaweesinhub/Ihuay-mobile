@@ -1,6 +1,7 @@
-import { collection, doc, getDoc, where, query, getDocs } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import moment from 'moment'
 import { db } from '../boot/firebase'
+
 const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
 const ThaiStockLottoCollection = collection(db, 'testLotto')
@@ -24,9 +25,8 @@ export function documentDate () {
   }
 }
 
-// eslint-disable-next-line camelcase
-export function Lotto_create_on_First_and_Sixteen_Date () {
-  if (moment().locale('th').date() <= 16) {
+export function lottoCreateOnFirstAndSixteen () {
+  if (moment().locale('th').date() < 16) {
     return 'DATE_'.concat(
       moment()
         .add(1, 'month')
@@ -41,20 +41,14 @@ export function Lotto_create_on_First_and_Sixteen_Date () {
     )
   }
 }
-// eslint-disable-next-line camelcase
-export function Lotto_create_on_Frist () {
-  const date = 'DATE_'.concat(
-    moment()
-      .add(1, 'month')
-      .date(1)
-      .subtract(7, 'day')
-      .locale('th')
-      .format('DD-MM-YYYY')
+export function LottoCreateOnSixteen () {
+  return 'DATE_'.concat(
+    moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
   )
-  return date
 }
 
 export async function getIndexLotto (queryDate) {
+  console.log(queryDate)
   let document
   await getDoc(doc(IndexLottoCollection, queryDate)).then((docSnap) => {
     if (docSnap.exists()) {

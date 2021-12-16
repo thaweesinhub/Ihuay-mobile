@@ -40,7 +40,6 @@ const mutations = {
     state.jubyeekeeLotto = payload
   }
 }
-// TODO : ต้องสร้าง action ของ เวลาแยก
 const actions = {
   setIndexLotto: async ({ commit }, payload) => {
     const lotto = await getIndexLotto(payload.docDate)
@@ -48,6 +47,7 @@ const actions = {
     if (lotto) {
       for (let x = 0; x < IndexLotto.length; x++) {
         if (lotto[IndexLotto[x].key] !== undefined) {
+          console.log(lotto[IndexLotto[x].key].docID)
           Lotto.push({
             name: lotto[IndexLotto[x].key].name,
             key: IndexLotto[x].key,
@@ -70,18 +70,16 @@ const actions = {
             Lotto.push({
               name: lotto[ThaiLotto[x].key].name,
               key: ThaiLotto[x].key,
-              result_first_prize: lotto[ThaiLotto[x].key].result_first_prize,
-              result_three_back_1: lotto[ThaiLotto[x].key].result_three_back_1,
-              result_three_back_2: lotto[ThaiLotto[x].key].result_three_back_2,
-              result_three_front_1: lotto[ThaiLotto[x].key].result_three_front_1,
-              result_three_front_2: lotto[ThaiLotto[x].key].result_three_front_2,
-              result_two_down: lotto[ThaiLotto[x].key].result_two_down
+              result_first_prize: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_first_prize),
+              result_three_back_1: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_three_back_1),
+              result_three_back_2: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_three_back_2),
+              result_three_front_1: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_three_front_1),
+              result_three_front_2: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_three_front_2),
+              result_two_down: checkLottoAlreadyHaveResult(lotto[ThaiLotto[x].key].result_two_down)
             })
-          } else {
-            //! in case lotto not created yet just create dummy to display same as below
-            Lotto.push(createDummyGovermentLotto())
           }
         } else {
+          //! in case lotto not created yet just create dummy to display same as below
           Lotto.push(createDummyGovermentLotto())
         }
       }

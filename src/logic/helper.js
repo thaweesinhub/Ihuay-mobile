@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function covertBetType (betType) {
   switch (betType) {
     case '3 ตัวบน':
@@ -17,4 +19,12 @@ export function covertBetType (betType) {
     case 'วิ่งล่าง':
       return 'run_down'
   }
+}
+
+export function checkIfTimeAlredyOver (closeTime) {
+  return moment(closeTime, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf() > 0
+}
+
+export function getUnixValue (time) {
+  return moment(time, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
 }
