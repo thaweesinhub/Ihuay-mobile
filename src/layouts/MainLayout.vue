@@ -144,7 +144,6 @@ export default defineComponent({
   },
   async created () {
     const value = this.$q.localStorage.getItem('darkMode')
-    console.log(value)
     // const x = this.$store.getters['appearance/userIsDarkMode']
     this.$q.dark.set(value)
     await this.checkUserAuth()

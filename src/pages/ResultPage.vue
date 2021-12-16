@@ -20,7 +20,7 @@ import moment from 'moment'
 import { useQuasar } from 'quasar'
 import { defineComponent } from 'vue'
 // eslint-disable-next-line camelcase
-import { documentDate, Lotto_create_on_First_and_Sixteen_Date, Lotto_create_on_Frist } from 'src/logic/queryDocument'
+import { documentDate, lottoCreateOnFirstAndSixteen, LottoCreateOnSixteen } from 'src/logic/queryDocument'
 import DisplayIndex from 'components/table/DisplayLotto/DisplayIndexLotto'
 import DisplayGovermentLotto from 'components/table/DisplayLotto/DisplayGovermentLotto'
 import DisplayThaiStockLotto from 'components/table/DisplayLotto/DisplayThaiStockLotto'
@@ -52,10 +52,13 @@ export default defineComponent({
       },
       LottoColumns: [{ name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true }],
       selectedDate: moment().locale('th').format('YYYY-MM-DD'),
-      queryDate: moment().locale('th').format('DD-MM-YYYY')
+      queryDate: moment().locale('th').format('DD-MM-YYYY'),
+      time: moment('12/14/2021 15:57', 'MM?DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
     }
   },
   async created () {
+    // console.log(new Date('12/14/2021 13:25'))
+    console.log(this.time)
     await this.setupLogic()
   },
   methods: {
@@ -73,11 +76,14 @@ export default defineComponent({
       await this.$store.dispatch('LottoResult/setThaiStockLotto', { docDate: date })
       await this.$store.dispatch('LottoResult/setForeignLotto', { docDate: date })
       await this.$store.dispatch('LottoResult/setJubyeekee', { docDate: date })
-      await this.$store.dispatch('LottoResult/setGovernmentLotto', { docDate: Lotto_create_on_First_and_Sixteen_Date() })
+      await this.$store.dispatch('LottoResult/setGovernmentLotto', { docDate: lottoCreateOnFirstAndSixteen() })
       await this.$store.dispatch('LottoResult/setBankLotto', {
-        baccDate: Lotto_create_on_Frist(),
-        gsbDate: Lotto_create_on_First_and_Sixteen_Date()
+        baccDate: LottoCreateOnSixteen(),
+        gsbDate: lottoCreateOnFirstAndSixteen()
       })
+    },
+    testend () {
+      console.log('xxxxxxxxxxxxxx')
     },
     refresh_LottoResult (done) {
       this.setupLogic()

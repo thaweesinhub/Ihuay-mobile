@@ -36,11 +36,11 @@
             </div>
           </q-card-section>
           <q-card-section class="flex flex-center"  style="margin-top: -5%">
-            <div>3 ตัวหน้า :  <strong class="text-h6">{{props.row.result_three_front_1}} , {{props.row.result_three_back_2}}</strong></div>
-            <q-separator vertical spaced></q-separator>
-            <div>3 ตัวล่าง : <strong class="text-h6">{{props.row.result_three_back_1}}, {{props.row.result_three_back_2}}</strong></div>
-            <q-separator vertical spaced></q-separator>
-            <div>2 ตัวล่าง : <strong class="text-h6">{{props.row.result_three_back_1}}, {{props.row.result_three_back_2}}</strong></div>
+              <div>3 ตัวหน้า :  <strong class="text-h6">{{props.row.result_three_front_1}} , {{props.row.result_three_back_2}}</strong></div>
+              <q-separator vertical spaced></q-separator>
+              <div>3 ตัวล่าง : <strong class="text-h6">{{props.row.result_three_back_1}}, {{props.row.result_three_back_2}}</strong></div>
+              <q-separator vertical spaced></q-separator>
+              <div>2 ตัวล่าง : <strong class="text-h6">{{props.row.result_three_back_1}}, {{props.row.result_three_back_2}}</strong></div>
           </q-card-section>
         </q-card>
       </div>

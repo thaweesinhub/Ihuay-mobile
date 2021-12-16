@@ -4,7 +4,7 @@
     <q-table
       grid
       card-class="bg-primary text-white"
-      title="Treats"
+      title="สร้างเลขชุด"
       :rows="number_memo_row"
       :columns="columns"
       row-key="displayname"

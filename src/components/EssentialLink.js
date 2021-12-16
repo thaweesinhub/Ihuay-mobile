@@ -7,7 +7,7 @@ export const isLoginList = [
   {
     title: 'Play (แทงหวย)',
     icon: 'casino',
-    link: 'SelectRoom'
+    link: 'select_game'
   },
   {
     title: 'Lottory Result (ผลรางวัล)',
