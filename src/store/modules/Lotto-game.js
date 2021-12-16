@@ -75,13 +75,11 @@ const actions = {
   },
   getGovernmentLotto: async ({ commit }) => {
     const lotto = await getNormalLotto(lottoCreateOnFirstAndSixteen())
-    console.log(lottoCreateOnFirstAndSixteen())
     const Lotto = []
     if (lotto) {
       for (let x = 0; x < ThaiLotto.length; x++) {
         if (lotto[ThaiLotto[x].key] !== undefined) {
           if (ThaiLotto[x].key === 'lotto_thai_gorverment') {
-            console.log(lotto[ThaiLotto[x].key])
             Lotto.push({
               name: lotto[ThaiLotto[x].key].name,
               key: ThaiLotto[x].key,

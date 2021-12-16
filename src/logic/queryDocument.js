@@ -48,7 +48,6 @@ export function LottoCreateOnSixteen () {
 }
 
 export async function getIndexLotto (queryDate) {
-  console.log(queryDate)
   let document
   await getDoc(doc(IndexLottoCollection, queryDate)).then((docSnap) => {
     if (docSnap.exists()) {
