@@ -7,6 +7,7 @@ import appearance from './modules/appearance'
 import LottoResult from './modules/Lotto-result'
 import NumberMemo from './modules/number-memo'
 import LottoGame from './modules/Lotto-game'
+import SelectedGameRoom from './modules/Select-game-room'
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -26,7 +27,8 @@ export default store(function (/* { ssrContext } */) {
       userEntity,
       LottoResult,
       NumberMemo,
-      LottoGame
+      LottoGame,
+      SelectedGameRoom
     },
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only

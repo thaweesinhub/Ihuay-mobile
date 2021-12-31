@@ -47,7 +47,6 @@ const actions = {
     if (lotto) {
       for (let x = 0; x < IndexLotto.length; x++) {
         if (lotto[IndexLotto[x].key] !== undefined) {
-          console.log(lotto[IndexLotto[x].key].docID)
           Lotto.push({
             name: lotto[IndexLotto[x].key].name,
             key: IndexLotto[x].key,
@@ -62,6 +61,7 @@ const actions = {
   },
   setGovernmentLotto: async ({ commit }, payload) => {
     const lotto = await getNormalLotto(payload.docDate)
+    console.log(lotto)
     const Lotto = []
     if (lotto) {
       for (let x = 0; x < ThaiLotto.length; x++) {
@@ -80,7 +80,7 @@ const actions = {
           }
         } else {
           //! in case lotto not created yet just create dummy to display same as below
-          Lotto.push(createDummyGovermentLotto())
+          // Lotto.push(createDummyGovermentLotto())
         }
       }
     } else {

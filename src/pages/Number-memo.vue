@@ -41,14 +41,14 @@
 </template>
 
 <script>
-import DisplayThaiStockLotto from 'components/table/Number-memo/DisplayNumberMemo'
+import DisplayNumberMemo from 'components/table/Number-memo/DisplayNumberMemo'
 import { NotifyWarning } from 'src/logic/handler'
 import { covertBetType } from 'src/logic/helper'
 
 export default {
   name: 'Number-memo',
   components: {
-    Display_numberMemo: DisplayThaiStockLotto
+    Display_numberMemo: DisplayNumberMemo
   },
   data () {
     return {

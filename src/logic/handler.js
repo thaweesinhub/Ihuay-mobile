@@ -29,12 +29,14 @@ export function getMessageFromErrorCode (ErrorCode) {
 export function NotifyWarning (msg) {
   Notify.create({
     type: 'warning',
+    group: false,
     message: `${msg}`
   })
 }
 
 export function NotifyError (msg) {
   Notify.create({
+    group: false,
     type: 'negative',
     message: `${msg}`
   })

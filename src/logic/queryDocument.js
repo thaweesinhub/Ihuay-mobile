@@ -26,6 +26,22 @@ export function documentDate () {
 }
 
 export function lottoCreateOnFirstAndSixteen () {
+  if (moment().locale('th').date() > 16) {
+    return 'DATE_'.concat(
+      moment()
+        .add(1, 'month')
+        .date(1)
+        .subtract(7, 'day')
+        .locale('th')
+        .format('DD-MM-YYYY')
+    )
+  } else {
+    return 'DATE_'.concat(
+      moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
+    )
+  }
+}
+export function resultLottoCreateOnFirstAndSixteen () {
   if (moment().locale('th').date() < 16) {
     return 'DATE_'.concat(
       moment()
@@ -41,6 +57,7 @@ export function lottoCreateOnFirstAndSixteen () {
     )
   }
 }
+
 export function LottoCreateOnSixteen () {
   return 'DATE_'.concat(
     moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
@@ -82,6 +99,8 @@ export async function getNormalLotto (queryDate) {
   await getDoc(doc(NormalLottoCollection, queryDate)).then((docSnap) => {
     if (docSnap.exists()) {
       document = docSnap.data()
+    } else {
+      return null
     }
   }).catch((error) => { console.log(error) })
   return document
@@ -100,4 +119,29 @@ export async function getNumberMemo (player) {
     }
   })
   return data
+}
+
+export async function queryDocument (collection, document) {
+  const docRef = doc(db, collection, document)
+  const docSnap = await getDoc(docRef)
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    return null
+  }
+}
+
+export async function queryDocumentWhere (col, value1, value2) {
+  const arr = []
+  const q = query(collection(db, col), where('lottoType', '==', value1), where('applyTo', '==', value2))
+  const querySnapshot = await getDocs(q)
+  if (!querySnapshot.empty) {
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data())
+      arr.push(doc.data())
+    })
+    return arr
+  } else {
+    return null
+  }
 }

@@ -28,3 +28,42 @@ export function checkIfTimeAlredyOver (closeTime) {
 export function getUnixValue (time) {
   return moment(time, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
 }
+
+export function inRange(x, min, max) {
+  return ((x-min)*(x-max) <= 0);
+}
+
+export function prepareInfo (gameKey) {
+  const info = {}
+  if (
+    gameKey === 'lotto_thai_gorverment' ||
+    gameKey === 'lotto_baac' ||
+    gameKey === 'lotto_gsb' ||
+    gameKey === 'lotto_maylasia' ||
+    gameKey === 'lotto_thai_gorverment' ||
+    gameKey === 'thai_stock_afternoon' ||
+    gameKey === 'thai_stock_evening' ||
+    gameKey === 'thai_stock_morning' ||
+    gameKey === 'thai_stock_noon'
+  ) {
+    info.priceRateCollection = 'lottoPrize'
+    info.lottomax = 'lottomax'
+    info.lottoCloseNumber = 'lottoCloseNumber'
+    info.gameNumberPrice = 'lottoGameNumberPrice'
+  } else {
+    info.priceRateCollection = 'indexlottoPrize'
+    info.lottomax = 'indexLottomax'
+    info.lottoCloseNumber = 'indexLottoCloseNumber'
+    info.gameNumberPrice = 'indexLottoGameNumberPrice'
+  }
+  return info
+}
+
+export const betType = [
+  { key: 'three_up' },
+  { key: 'three_up_tod' },
+  { key: 'two_up' },
+  { key: 'two_down' },
+  { key: 'run_up' },
+  { key: 'run_down' }
+]

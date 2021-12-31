@@ -20,7 +20,11 @@ import moment from 'moment'
 import { useQuasar } from 'quasar'
 import { defineComponent } from 'vue'
 // eslint-disable-next-line camelcase
-import { documentDate, lottoCreateOnFirstAndSixteen, LottoCreateOnSixteen } from 'src/logic/queryDocument'
+import {
+  documentDate,
+  LottoCreateOnSixteen,
+  resultLottoCreateOnFirstAndSixteen
+} from 'src/logic/queryDocument'
 import DisplayIndex from 'components/table/DisplayLotto/DisplayIndexLotto'
 import DisplayGovermentLotto from 'components/table/DisplayLotto/DisplayGovermentLotto'
 import DisplayThaiStockLotto from 'components/table/DisplayLotto/DisplayThaiStockLotto'
@@ -57,8 +61,6 @@ export default defineComponent({
     }
   },
   async created () {
-    // console.log(new Date('12/14/2021 13:25'))
-    console.log(this.time)
     await this.setupLogic()
   },
   methods: {
@@ -76,10 +78,10 @@ export default defineComponent({
       await this.$store.dispatch('LottoResult/setThaiStockLotto', { docDate: date })
       await this.$store.dispatch('LottoResult/setForeignLotto', { docDate: date })
       await this.$store.dispatch('LottoResult/setJubyeekee', { docDate: date })
-      await this.$store.dispatch('LottoResult/setGovernmentLotto', { docDate: lottoCreateOnFirstAndSixteen() })
+      await this.$store.dispatch('LottoResult/setGovernmentLotto', { docDate: resultLottoCreateOnFirstAndSixteen() })
       await this.$store.dispatch('LottoResult/setBankLotto', {
         baccDate: LottoCreateOnSixteen(),
-        gsbDate: lottoCreateOnFirstAndSixteen()
+        gsbDate: resultLottoCreateOnFirstAndSixteen()
       })
     },
     testend () {

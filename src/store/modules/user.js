@@ -7,14 +7,16 @@ const defaultState = () => {
   return {
     username: null,
     userID: null,
-    user_Credit: null
+    user_Credit: null,
+    user_agent: null
   }
 }
 
 const state = {
   username: null,
   userID: null,
-  user_Credit: null
+  user_Credit: null,
+  user_agent: null
 }
 
 const mutations = {
@@ -26,6 +28,9 @@ const mutations = {
   },
   'SET_USER_ID' (state, payload) {
     state.userID = payload.userID
+  },
+  'SET_USER_AGENT' (state, payload) {
+    state.user_agent = payload
   },
   resetState (state) {
     Object.assign(state, defaultState())
@@ -56,6 +61,7 @@ const actions = {
       if (res.exists()) {
         commit('SET_USER_CREDIT', { user_Credit: res.data().credit })
         commit('SET_USER', { username: res.data().username })
+        commit('SET_USER_AGENT', res.data().agentID)
       } else { console.log('no doc') }
     }).catch(error => console.log(error))
   },
@@ -79,6 +85,9 @@ const getters = {
   },
   userID (state) {
     return state.userID
+  },
+  userAgent (state) {
+    return state.user_agent
   }
 }
 
