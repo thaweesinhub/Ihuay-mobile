@@ -61,7 +61,6 @@ const actions = {
   },
   setGovernmentLotto: async ({ commit }, payload) => {
     const lotto = await getNormalLotto(payload.docDate)
-    console.log(lotto)
     const Lotto = []
     if (lotto) {
       for (let x = 0; x < ThaiLotto.length; x++) {
@@ -132,10 +131,10 @@ const actions = {
         if (BankLotto[x].key === 'lotto_gsb') {
           if (gsbLotto[BankLotto[x].key] !== undefined) {
             Lotto.push({
-              name: baccLotto[BankLotto[x].key].name,
+              name: gsbLotto[BankLotto[x].key].name,
               key: BankLotto[x].key,
-              result_three_up: checkLottoAlreadyHaveResult(baccLotto[BankLotto[x].key].result_three_up),
-              result_two_down: checkLottoAlreadyHaveResult(baccLotto[BankLotto[x].key].result_two_down)
+              result_three_up: checkLottoAlreadyHaveResult(gsbLotto[BankLotto[x].key].result_three_up),
+              result_two_down: checkLottoAlreadyHaveResult(gsbLotto[BankLotto[x].key].result_two_down)
             })
           } else {
             Lotto.push(dummyGSBLotto)
