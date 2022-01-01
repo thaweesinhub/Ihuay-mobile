@@ -47,7 +47,7 @@ export function lottoCreateOnFirstAndSixteen () {
     // ? IF เลย 16 มาเเล้ว
     // ? check ว่าถึงวันที่ doc ของงวดใหม่จะถูกสร้างรึยีง ถ้าสร้างเเล้วก็ไปใช้ของอันใหม่
     if (moment().locale('th').date() <= moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').date()) {
-      //? ถ้า ยังไม่ถึงวันก็กลับไปใช้อันเก่า
+      // ? ถ้า ยังไม่ถึงวันก็กลับไปใช้อันเก่า
       return 'DATE_'.concat(
         moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
       )

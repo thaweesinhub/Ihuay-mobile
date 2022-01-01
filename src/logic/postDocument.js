@@ -2,7 +2,6 @@ import { db } from 'boot/firebase'
 import { collection, addDoc, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore'
 import moment from 'moment'
 import { NotifyError, NotifySuccess } from 'src/logic/handler'
-import { handleError } from 'vue'
 
 // eslint-disable-next-line camelcase
 export async function CreateUserNumber_memo (payload) {
@@ -35,6 +34,7 @@ export async function deleteDocuments (collection, docID) {
     .then(() => { return 'success' })
 }
 
+// eslint-disable-next-line camelcase
 export async function updateNumberPrice (unique_key, numberPriceCollection, betType, number, value, agentID) {
   await setDoc(doc(db, numberPriceCollection, unique_key), {
     [agentID]: { [betType]: { [number]: value } }
@@ -43,6 +43,7 @@ export async function updateNumberPrice (unique_key, numberPriceCollection, betT
   })
 }
 
+// eslint-disable-next-line camelcase
 export async function createNumberPrice (unique_key, numberPriceCollection, betType, number, value, agentID) {
   await setDoc(doc(db, numberPriceCollection, unique_key), {
     [agentID]: { [betType]: { [number]: value } }
@@ -60,6 +61,7 @@ export async function updateUserCredit (UserCredit, userID) {
   })
 }
 
+// eslint-disable-next-line camelcase
 export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, gameKey, gameName, betPrice) {
   await addDoc(collection(db, 'boughtLottery'), {
     boughtLottery: Lotto,

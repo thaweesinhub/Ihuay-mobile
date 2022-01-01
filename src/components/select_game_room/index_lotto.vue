@@ -93,6 +93,7 @@ export default {
         return images('./' + lottoName + '.jpeg')
       }
     },
+    // eslint-disable-next-line camelcase
     async gotoPlay (key, name, close_date_time, unique_key, doc) {
       await this.$store.dispatch('SelectedGameRoom/setSelectedGame',
         {

@@ -29,8 +29,8 @@ export function getUnixValue (time) {
   return moment(time, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
 }
 
-export function inRange(x, min, max) {
-  return ((x-min)*(x-max) <= 0);
+export function inRange (x, min, max) {
+  return ((x - min) * (x - max) <= 0)
 }
 
 export function prepareInfo (gameKey) {
