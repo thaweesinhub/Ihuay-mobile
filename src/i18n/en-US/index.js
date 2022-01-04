@@ -2,6 +2,7 @@
 // so you can safely delete all default props below
 
 export default {
+  selected_lang: 'English',
   three_up: '3 up',
   two_up: '2 up',
   three_up_tod: '3 toads',

@@ -1,4 +1,5 @@
 export default {
+  selected_lang: 'ไทย',
   three_up: '3 ตัวบน',
   three_up_tod: '3 ตัวโต๊ต',
   two_up: '2 ตัวบน',

@@ -18,8 +18,15 @@
         </q-toolbar-title>
 
         <div>
-          <q-btn-dropdown flat icon="translate"  >
-<!--            :icon="iconPic('Thailand','index')-->
+          <q-btn-dropdown flat   >
+            <template v-slot:label>
+              <div class="row items-center no-wrap">
+                <q-icon left :name="flag" />
+                <div class="text-center">
+                  {{$t('selected_lang')}}
+                </div>
+              </div>
+            </template>
             <q-list >
               <q-item class="flex flex-center"  clickable v-close-popup @click="setLanguage('th-THAI')">
                 <q-item-section class="q-mr-sm">
@@ -42,12 +49,6 @@
                   :alt="iconPic('index_england','index')"
                 />
               </q-item>
-
-<!--              <q-item clickable v-close-popup @click="onItemClick">-->
-<!--                <q-item-section>-->
-<!--                  <q-item-label>Articles</q-item-label>-->
-<!--                </q-item-section>-->
-<!--              </q-item>-->
             </q-list>
           </q-btn-dropdown>
         </div>
@@ -150,6 +151,17 @@ export default defineComponent({
     },
     userCredit () {
       return this.$store.getters['userEntity/user_Credit']
+    },
+    flag () {
+      // console.log(this.$i18n.locale)
+      // if (this.$i18n.locale === 'th-THAI') {
+      //   return  'https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
+      // } else if ()
+
+      switch (this.$i18n.locale) {
+        case 'th-THAI' : return  'img:https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
+        case 'en-US' : return  'img:https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/2560px-Flag_of_England.svg.png'
+      }
     }
   },
 
