@@ -11,7 +11,8 @@ const routes = [
       { path: '/login', name: 'Login', component: () => import('pages/LoginPage.vue') },
       { path: '/number-memo', name: 'number-memo', component: () => import('pages/Number-memo') },
       { path: '/select_game', name: 'select_game', component: () => import('pages/select_room_layout') },
-      { path: '/playgame', name: 'playgame', component: () => import('pages/play-game') }
+      { path: '/playgame', name: 'playgame', component: () => import('pages/play-game') },
+      { path: '/ticket_summary', name: 'playHistory', component: () => import('pages/ticket-summary')}
     ]
   },
   {

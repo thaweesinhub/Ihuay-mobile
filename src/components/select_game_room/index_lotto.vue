@@ -17,7 +17,9 @@
         props.row.name,
         props.row.unixTimeLeft,
         props.row.unique_key,
-        props.row.docID,)" >
+        props.row.docID,
+        props.row.display_close_date_time
+        )" >
         <div class="q-pa-xs col-xs-12 col-sm-12 col-md-12 ">
           <q-card class="" >
             <q-card-section  >
@@ -94,7 +96,7 @@ export default {
       }
     },
     // eslint-disable-next-line camelcase
-    async gotoPlay (key, name, close_date_time, unique_key, doc) {
+    async gotoPlay (key, name, close_date_time, unique_key, doc,dateTime) {
       await this.$store.dispatch('SelectedGameRoom/setSelectedGame',
         {
           gameName: name,
@@ -102,7 +104,8 @@ export default {
           gameTimeLeft: close_date_time,
           gameUnique_key: unique_key,
           gameDocID: doc,
-          gameType: 'lotto'
+          gameType: 'lotto',
+          gameCloseDateTime: dateTime
         })
       await this.$router.push('playgame')
     }

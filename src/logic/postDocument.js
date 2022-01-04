@@ -62,7 +62,7 @@ export async function updateUserCredit (UserCredit, userID) {
 }
 
 // eslint-disable-next-line camelcase
-export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, gameKey, gameName, betPrice) {
+export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, gameKey, gameName, betPrice, lottoCloseTime) {
   await addDoc(collection(db, 'boughtLottery'), {
     boughtLottery: Lotto,
     player: member,
@@ -71,11 +71,11 @@ export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, 
     unique_key: gameUnique_key,
     betPrice: betPrice,
     display_date_time: moment().locale('th').format('L HH:mm '),
-    date_time: moment().format('L HH:mm'),
+    lottoCloseTime: lottoCloseTime,
     IsReWard: false,
     IsCancel: false,
     IsWaiting: true
   }).catch((error) => {
     NotifyError(error)
-  }).then(() => { NotifySuccess('ทำรายการสำเร็จ') })
+  }).then((docRef) => { NotifySuccess('ทำรายการสำเร็จ'); console.log(docRef.id) })
 }

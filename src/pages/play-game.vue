@@ -631,7 +631,8 @@ export default {
         agentID,
         gameInfo.gameKey,
         gameInfo.gameName,
-        this.total_bet
+        this.total_bet,
+        gameInfo.gameCloseDateTime,
       )
     },
     confirmDialog () {

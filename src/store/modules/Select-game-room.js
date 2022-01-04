@@ -9,6 +9,7 @@ const state = {
   gameUnique_key: null,
   gameType: null,
   gameNumberPriceCollection: null,
+  gameCloseDateTime: null,
   gamePayRate: {},
   gamePriceMax: [],
   gameCloseNumber: []
@@ -22,6 +23,7 @@ const mutations = {
     state.gameUnique_key = payload.gameUnique_key
     state.gameDocID = payload.gameDocID
     state.gameType = payload.gameType
+    state.gameCloseDateTime = payload.gameCloseDateTime
     state.gamePayRate = payload.priceRate
     state.gamePriceMax = payload.gamePriceMax
     state.gameCloseNumber = payload.gameCloseNumber

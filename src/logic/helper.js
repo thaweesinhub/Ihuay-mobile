@@ -67,3 +67,23 @@ export const betType = [
   { key: 'run_up' },
   { key: 'run_down' }
 ]
+
+export function filterResultedLotto (payload) {
+  const arr = []
+  payload.forEach((item) => {
+    if (item.IsWaiting === false && item.IsReWard === true) {
+      arr.push(item)
+    }
+  })
+  return arr
+}
+
+export function filterWaitForResult (payload) {
+  const arr = []
+  payload.forEach((item) => {
+    if (item.IsWaiting === true && item.IsReWard === false) {
+      arr.push(item)
+    }
+  })
+  return arr
+}

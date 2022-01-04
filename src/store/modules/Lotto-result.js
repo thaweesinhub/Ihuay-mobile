@@ -61,7 +61,6 @@ const actions = {
   },
   setGovernmentLotto: async ({ commit }, payload) => {
     const lotto = await getNormalLotto(payload.docDate)
-    console.log(payload.docDate)
     const Lotto = []
     if (lotto) {
       for (let x = 0; x < ThaiLotto.length; x++) {

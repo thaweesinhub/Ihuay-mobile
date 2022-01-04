@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where, orderBy } from 'firebase/firestore'
 import moment from 'moment'
 import { db } from '../boot/firebase'
 
@@ -6,6 +6,7 @@ const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
 const ThaiStockLottoCollection = collection(db, 'testLotto')
 const JubyeekeeCollection = collection(db, 'JukyeekeeGameRoom')
+const BoughtLottoCollection = collection(db, 'boughtLottery')
 // const Number_memoCollection = collection(db, 'setNumber')
 
 export function documentDate () {
@@ -30,7 +31,6 @@ export function lottoCreateOnFirstAndSixteen () {
     // ? check ว่า ถึงวันที่ 9 ละยัง ถ้าถึงเเล้วก็จะใช้ doc ของวันที่ 9
     // ? ถ้ายังไม่ถึงก็จะใช้ของเดือนที่เเล้ว
     if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
-      console.log('asdasdffffffffffffff')
       return 'DATE_'.concat(
         moment()
           .date(1)
@@ -171,7 +171,20 @@ export async function queryDocumentWhere (col, value1, value2) {
   const querySnapshot = await getDocs(q)
   if (!querySnapshot.empty) {
     querySnapshot.forEach((doc) => {
-      console.log(doc.data())
+      arr.push(doc.data())
+    })
+    return arr
+  } else {
+    return null
+  }
+}
+
+export async function getTicketHistory (uid) {
+  const arr = []
+  const q = query(collection(db,'boughtLottery'), where('player', '==', uid), orderBy('display_date_time', 'desc'))
+  const querySnapshot = await getDocs(q)
+  if (!querySnapshot.empty) {
+    querySnapshot.forEach((doc) => {
       arr.push(doc.data())
     })
     return arr

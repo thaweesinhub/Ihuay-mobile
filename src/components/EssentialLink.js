@@ -17,13 +17,14 @@ export const isLoginList = [
   {
     title: 'History (โพยหวย)',
     icon: 'history',
-    link: 'playHistory'
+    link: 'ticket_summary'
   },
   {
     title: 'สร้างเลขชุด',
     icon: 'add_circle',
     link: 'number-memo'
-  }
+  },
+
 ]
 
 export const notLoginList = [
