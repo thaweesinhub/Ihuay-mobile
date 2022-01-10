@@ -6,7 +6,6 @@ const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
 const ThaiStockLottoCollection = collection(db, 'testLotto')
 const JubyeekeeCollection = collection(db, 'JukyeekeeGameRoom')
-const BoughtLottoCollection = collection(db, 'boughtLottery')
 // const Number_memoCollection = collection(db, 'setNumber')
 
 export function documentDate () {
@@ -181,7 +180,7 @@ export async function queryDocumentWhere (col, value1, value2) {
 
 export async function getTicketHistory (uid) {
   const arr = []
-  const q = query(collection(db,'boughtLottery'), where('player', '==', uid), orderBy('display_date_time', 'desc'))
+  const q = query(collection(db, 'boughtLottery'), where('player', '==', uid), orderBy('display_date_time', 'desc'))
   const querySnapshot = await getDocs(q)
   if (!querySnapshot.empty) {
     querySnapshot.forEach((doc) => {

@@ -23,7 +23,7 @@ export const isLoginList = [
     title: 'สร้างเลขชุด',
     icon: 'add_circle',
     link: 'number-memo'
-  },
+  }
 
 ]
 

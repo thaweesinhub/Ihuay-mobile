@@ -152,6 +152,7 @@ export default defineComponent({
     userCredit () {
       return this.$store.getters['userEntity/user_Credit']
     },
+    // eslint-disable-next-line vue/return-in-computed-property
     flag () {
       // console.log(this.$i18n.locale)
       // if (this.$i18n.locale === 'th-THAI') {
@@ -159,8 +160,8 @@ export default defineComponent({
       // } else if ()
 
       switch (this.$i18n.locale) {
-        case 'th-THAI' : return  'img:https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
-        case 'en-US' : return  'img:https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/2560px-Flag_of_England.svg.png'
+        case 'th-THAI' : return 'img:https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
+        case 'en-US' : return 'img:https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/2560px-Flag_of_England.svg.png'
       }
     }
   },

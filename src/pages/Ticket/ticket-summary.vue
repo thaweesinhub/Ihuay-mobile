@@ -14,7 +14,6 @@
       <q-tab class="q-pa-lg" name="all" label="ทั้งหมด" />
     </q-tabs>
   </div>
-
   <div v-if="tab === 'wait' ">
     <div v-for="(item,i) in waitForResult" :key="i" class="q-pa-xs q-my-md col-xs-12 col-sm-6 col-md-4">
       <div class="row">
@@ -28,7 +27,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameName}}</span>
+                <span class="text-h5  ">{{item.gameID}} </span>
               </div>
 
             </q-card-section>
@@ -76,7 +75,7 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer">
+                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer" @click="gotoNextPage(item)">
                     <q-icon name="zoom_in" size="sm" />
                     <span class="q-ml-xs">รายละเอียด</span>
                   </div>
@@ -103,7 +102,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameName}}</span>
+                <span class="text-h5  ">{{item.gameID}}</span>
               </div>
 
             </q-card-section>
@@ -145,7 +144,7 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer">
+                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer" @click="gotoNextPage(item)">
                     <q-icon name="zoom_in" size="sm" />
                     <span class="q-ml-xs">รายละเอียด</span>
                   </div>
@@ -172,7 +171,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameName}}</span>
+                <span class="text-h5  ">{{item.gameID}}</span>
               </div>
 
             </q-card-section>
@@ -220,7 +219,7 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer">
+                  <div class="bg-grey-6 q-mx-xs q-mt-sm rounded-borders q-pa-xs flex flex-center cursor-pointer" @click="gotoNextPage(item)">
                     <q-icon name="zoom_in" size="sm" />
                     <span class="q-ml-xs">รายละเอียด</span>
                   </div>
@@ -234,7 +233,6 @@
 
     </div>
   </div>
-
 
 </q-page>
 </template>
@@ -273,6 +271,10 @@ export default {
       }
       const sum = wimSum - loseSum
       return sum
+    },
+    async gotoNextPage (item) {
+      await this.$store.dispatch('PlayHistory/setTicket_info', item)
+      await this.$router.push('ticket_info')
     }
   },
   computed: {

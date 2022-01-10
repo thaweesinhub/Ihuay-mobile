@@ -192,7 +192,57 @@
                 <q-btn  class="flex-center flex q-mt-lg" color="primary" label="select" v-close-popup @click="handleAddMemo" :disable="selected.length === 0"/>
               </q-card>
             </q-dialog>
-            <q-btn color="primary" label="ดึงจากโพยเก่า" size="md"/>
+            <q-btn color="primary" label="ดึงจากโพยเก่า" size="md" @click="historyDialog = true"/>
+            <q-dialog  v-model="historyDialog" >
+              <q-card class="flex-center flex">
+                <q-table
+                  grid
+                  title="เลือกจากโพยหวย"
+                  :rows="playhistory_row"
+                  :columns="columns2"
+                  row-key="key"
+                  :pagination="pagination"
+                  selection="multiple"
+                  v-model:selected="selected"
+                  hide-header
+                  hide-bottom
+                >
+                  <template v-slot:item="props">
+                    <div
+                      class="q-pa-xs flex-center flex"
+                      :style="props.selected ? 'transform: scale(0.95);' : ''"
+                    >
+                      <q-card :class="props.selected ? 'animate__animated  animate__headShake' : ''">
+                        <q-card-section>
+                          <q-checkbox class="text-h5" dense v-model="props.selected" :label="props.row.displayname"/>
+                        </q-card-section>
+                        <q-separator/>
+                        <q-list dense>
+                          <q-item v-for="col in props.cols.filter(col => col.name !== 'desc')" :key="col.name">
+                            <q-item-section>
+                              <q-item-label class="text-h6">{{ col.label }}</q-item-label>
+                            </q-item-section>
+                            <q-item-section side>
+                              <div v-if="Array.isArray(col.value)">
+                                <q-item-label caption v-for="item in col.value" :key="item"><span
+                                  class="text-subtitle1">{{ item.type }} : </span>
+                                  <span class="text-subtitle1">{{
+                                      item.value
+                                    }} </span></q-item-label>
+                              </div>
+                              <div v-else>
+                                <q-item-label caption ><span class="text-subtitle1">{{ col.value }}</span></q-item-label>
+                              </div>
+                            </q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-card>
+                    </div>
+                  </template>
+                </q-table>
+                <q-btn  class="flex-center flex q-mt-lg" color="primary" label="select" v-close-popup @click="handleAddMemo" :disable="selected.length === 0"/>
+              </q-card>
+            </q-dialog>
           </div>
         </div>
       </div>
@@ -346,7 +396,7 @@ import OtpInput from 'vue3-otp-input'
 import { Loading, useQuasar } from 'quasar'
 import { ref } from 'vue'
 import { NotifyError, NotifyWarning } from 'src/logic/handler'
-import { betType, inRange } from 'src/logic/helper'
+import { betType, covertBetTypeENGtoTH, inRange } from 'src/logic/helper'
 import { queryDocument } from 'src/logic/queryDocument'
 import {
   createDummy,
@@ -379,6 +429,30 @@ const columns = [
     sortable: true
   }
 ]
+const columns2 = [
+  {
+    name: 'desc',
+    required: true,
+    label: 'ชื่อเลขชุด',
+    align: 'left',
+    field: row => row.displayname,
+    format: val => `${val}`,
+    sortable: true
+  },
+  {
+    name: 'createTime',
+    align: 'center',
+    label: 'playedGame',
+    field: 'createTime',
+    sortable: true
+  },
+  {
+    name: 'selectNumber',
+    label: 'เลข',
+    field: 'selectNumber',
+    sortable: true
+  }
+]
 
 export default {
 
@@ -401,8 +475,11 @@ export default {
         rowsPerPage: 0
       },
       number_memo_row: [],
+      playhistory_row: [],
+      selectedHistory: [],
       selected: [],
       dialog: false,
+      historyDialog: false,
       priceRate: {},
       info: {},
       $q: useQuasar()
@@ -463,6 +540,9 @@ export default {
       })
       this.selected = []
     },
+    handleAddPlayHistory () {
+      console.log(this.selectedHistory)
+    },
     async handleSentLotto () {
       const isDupilcateCloseNum = this.checkForCloseNumber()
       const isMax = this.checkForMaxNumber()
@@ -476,11 +556,12 @@ export default {
       }
     },
     addNumber (number, type) {
+      console.log(type)
       const price = this.$store.getters['SelectedGameRoom/getSelectedGame']
       if (this.checkIfTypeAlreadyExist(type)) {
         this.SelectLotto[this.checkIfArrayIndexWithKey()].select_number.push({ num: number, payRate: price.gamePayRate[type].level0.prize, price: 1, isWaiting: true, isWin: false })
       } else {
-        this.SelectLotto.push({ key: this.selectType, select_number: [{ num: number, payRate: price.gamePayRate[type].level0.prize, price: 1, isWaiting: true, isWin: false }] })
+        this.SelectLotto.push({ key: type, select_number: [{ num: number, payRate: price.gamePayRate[type].level0.prize, price: 1, isWaiting: true, isWin: false }] })
       }
       setTimeout(this.handleClearInput, 100)
     },
@@ -624,15 +705,16 @@ export default {
       const gameInfo = this.$store.getters['SelectedGameRoom/getSelectedGame']
       const userID = this.$store.getters['userEntity/userID']
       const agentID = this.$store.getters['userEntity/userAgent']
+      const lotto = this.prepareData()
       await createLottoOrder(
         gameInfo.gameUnique_key,
-        this.SelectLotto,
+        lotto,
         userID,
         agentID,
         gameInfo.gameKey,
         gameInfo.gameName,
         this.total_bet,
-        gameInfo.gameCloseDateTime,
+        gameInfo.gameCloseDateTime
       )
     },
     confirmDialog () {
@@ -650,12 +732,29 @@ export default {
         await this.updateUserCredit()
         await this.createOrder()
         await this.$store.dispatch('userEntity/fetchUser')
+        await this.$router.push('/ticket_summary')
         Loading.hide()
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       }).onDismiss(() => {
         // console.log('I am triggered on both OK and Cancel')
       })
+    },
+    prepareData () {
+      const obj = {}
+      console.log(this.SelectLotto)
+      for (let x = 0; x < this.SelectLotto.length; x++) {
+        for (let y = 0; y < betType.length; y++) {
+          if (this.SelectLotto[x].key === betType[y].key) {
+            console.log('dsd')
+            obj[betType[y].key] = {}
+            obj[betType[y].key].name = betType[y].key
+            obj[betType[y].key].displayname = covertBetTypeENGtoTH(betType[y].key)
+            obj[betType[y].key].nums = this.SelectLotto[x].select_number
+          }
+        }
+      }
+      return obj
     },
     deleteSelectNumber (y, x) {
       this.SelectLotto[y].select_number.splice(x, 1)
@@ -685,7 +784,10 @@ export default {
     },
     async setupss () {
       await this.$store.dispatch('NumberMemo/getUserNumberMemo')
+      await this.$store.dispatch('PlayHistory/getTicket_summary')
+      await this.$store.dispatch('PlayHistory/prepareInfoForPlayGame')
       this.number_memo_row = this.$store.getters['NumberMemo/userNumber_memo']
+      this.playhistory_row = this.$store.getters['PlayHistory/getInfoForPlayGame']
     },
     async checkForPriceRate () {
       let dup = false
@@ -978,70 +1080,70 @@ export default {
                     if (inRange(sum, ratePrize[betType[i].key].level0.min, ratePrize[betType[i].key].level0.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level1.min, ratePrize[betType[i].key].level1.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level2.min, ratePrize[betType[i].key].level2.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level3.min, ratePrize[betType[i].key].level3.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level4.min, ratePrize[betType[i].key].level4.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level5.min, ratePrize[betType[i].key].level5.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else if (inRange(sum, ratePrize[betType[i].key].level6.min, ratePrize[betType[i].key].level6.max)) {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     } else {
                       await updateNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                         betType[i].key,
-                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                        'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                         sum,
                         agentID)
                     }
                   } else {
                     await createNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                       betType[i].key,
-                      'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                      'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                       this.SelectLotto[x].select_number[y].price,
                       agentID)
                   }
                 } else {
                   await createNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                     betType[i].key,
-                    'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                    'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                     this.SelectLotto[x].select_number[y].price,
                     agentID)
                 }
               } else {
                 await createNumberPrice(info.gameUnique_key, info.gameNumberPriceCollection,
                   betType[i].key,
-                  'rateNumber_'.concat(this.SelectLotto[x].select_number[y].payRate),
+                  'rateNumber_'.concat(this.SelectLotto[x].select_number[y].num),
                   this.SelectLotto[x].select_number[y].price,
                   agentID)
               }
@@ -1058,7 +1160,8 @@ export default {
   },
   setup () {
     return {
-      columns
+      columns,
+      columns2
     }
   }
 }
@@ -1076,5 +1179,9 @@ export default {
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   text-align: center;
+}
+.my-card {
+  width: 100%;
+  max-width: 350px;
 }
 </style>

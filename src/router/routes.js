@@ -12,7 +12,8 @@ const routes = [
       { path: '/number-memo', name: 'number-memo', component: () => import('pages/Number-memo') },
       { path: '/select_game', name: 'select_game', component: () => import('pages/select_room_layout') },
       { path: '/playgame', name: 'playgame', component: () => import('pages/play-game') },
-      { path: '/ticket_summary', name: 'playHistory', component: () => import('pages/ticket-summary')}
+      { path: '/ticket_summary', name: 'playHistory', component: () => import('pages/Ticket/ticket-summary') },
+      { path: '/ticket_info', name: 'ticketInfo', component: () => import('pages/Ticket/ticket_info') }
     ]
   },
   {

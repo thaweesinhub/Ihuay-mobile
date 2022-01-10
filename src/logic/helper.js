@@ -21,6 +21,27 @@ export function covertBetType (betType) {
   }
 }
 
+export function covertBetTypeENGtoTH (betType) {
+  switch (betType) {
+    case 'three_up':
+      return '3 ตัวบน'
+    case 'three_up_tod':
+      return '3 ตัวโต๊ด'
+    case 'two_up':
+      return '2 ตัวบน'
+    case 'two_down':
+      return '2 ตัวล่าง'
+    case 'three_front':
+      return '3 ตัวหน้า'
+    case 'three_back':
+      return '3 ตัวล่าง'
+    case 'run_up':
+      return 'วิ่งบน'
+    case 'run_down':
+      return 'วิ่งล่าง'
+  }
+}
+
 export function checkIfTimeAlredyOver (closeTime) {
   return moment(closeTime, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf() > 0
 }
