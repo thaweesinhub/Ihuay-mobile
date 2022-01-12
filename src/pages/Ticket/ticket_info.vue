@@ -5,6 +5,7 @@
     <div class="col-12 col-md-8">
       <q-card class="">
         <q-card-section class=""  >
+          <q-btn class="float-left" round icon="arrow_back" v-on:click="$router.go(-1)"/>
           <div class="flex-center flex">
             <span class="text-h5  ">{{lottoInfo.gameID}} </span>
           </div>
@@ -32,7 +33,7 @@
               </div>
               <q-separator/>
               <div class="flex-center flex q-mt-md">
-                <div v-if="!lottoInfo.IsWaiting">
+                <div v-if="!lottoInfo.IsWaiting && !lottoInfo.IsCancel">
                   <p v-if="findSum(lottoInfo.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(lottoInfo.boughtLottery)}}</p>
                   <p v-else-if="findSum(lottoInfo.boughtLottery) < 0" class="text-h6 text-negative ">฿ {{findSum(lottoInfo.boughtLottery)}}</p>
                 </div>
@@ -53,14 +54,16 @@
                 <div class="row">
                   <div class="col"/>
                   <div class="col">
-                    <div v-if="item.isWaiting" class="bg-warning q-pa-xs rounded-borders flex flex-center  q-ma-xs">
-                      <span class="">รอผล</span>
-                    </div>
-                    <div v-else-if="!item.isWaiting && item.isWin"  class="bg-positive q-pa-xs rounded-borders flex flex-center  q-ma-xs">
-                      <span class="">ถูกว่างวัล</span>
-                    </div>
-                    <div v-else-if="!item.isWaiting && !item.isWin"  class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">
-                      <span class="">ไม่ถูกว่างวัล</span>
+                    <div v-if="item.result !== 'cancel'">
+                      <div v-if="item.isWaiting" class="bg-warning q-pa-xs rounded-borders flex flex-center  q-ma-xs">
+                        <span class="">รอผล</span>
+                      </div>
+                      <div v-else-if="!item.isWaiting && item.isWin"  class="bg-positive q-pa-xs rounded-borders flex flex-center  q-ma-xs">
+                        <span class="">ถูกว่างวัล</span>
+                      </div>
+                      <div v-else-if="!item.isWaiting && !item.isWin"  class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">
+                        <span class="">ไม่ถูกว่างวัล</span>
+                      </div>
                     </div>
                     <div v-else class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">
                       <span class="">ยกเลิก</span>

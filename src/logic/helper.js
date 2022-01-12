@@ -66,11 +66,17 @@ export function prepareInfo (gameKey) {
     gameKey === 'thai_stock_evening' ||
     gameKey === 'thai_stock_morning' ||
     gameKey === 'thai_stock_noon'
-  ) {
+  )
+  {
     info.priceRateCollection = 'lottoPrize'
     info.lottomax = 'lottomax'
     info.lottoCloseNumber = 'lottoCloseNumber'
     info.gameNumberPrice = 'lottoGameNumberPrice'
+  } else if (gameKey.includes('round')) {
+    info.priceRateCollection = 'JukyeekeePrize'
+    info.lottomax = 'JukyeekeeMaxplay'
+    info.lottoCloseNumber = 'JukyeekeeClosenumber'
+    info.gameNumberPrice = 'JukyeekeeGameNumberPrice'
   } else {
     info.priceRateCollection = 'indexlottoPrize'
     info.lottomax = 'indexLottomax'

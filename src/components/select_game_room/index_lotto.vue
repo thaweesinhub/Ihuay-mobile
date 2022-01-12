@@ -39,7 +39,7 @@
             <q-separator />
             <q-card-section class="flex flex-center" >
               <div v-if="props.row.unixTimeLeft > 0 && props.row.isOpen === true">
-                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex)">
+                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex,'indexLotto')">
                   <span class="text-subtitle1" >
                     เหลือเวลา {{ totalHours }} ชั่วโมง  {{ minutes }} นาที {{ seconds }} วินาที
                   </span>
@@ -76,8 +76,8 @@ export default {
     }
   },
   methods: {
-    closeRoom (index) {
-      this.$store.dispatch('LottoGame/setTimeoutLotto', index)
+    closeRoom (index,type) {
+      this.$store.dispatch('LottoGame/setTimeoutLotto', {type:type, index:index})
     },
     sss () {
       alert('sss')

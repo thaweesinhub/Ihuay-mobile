@@ -5,16 +5,16 @@
   </div>
   <div class="flex-center flex">
     <q-tabs
-      v-model="tab"
+      v-model="tabView"
       align="justify"
       :breakpoint="0"
     >
-      <q-tab name="wait" label="รอผล" />
-      <q-tab name="resulted" label="ออกผลแล้ว" />
-      <q-tab class="q-pa-lg" name="all" label="ทั้งหมด" />
+      <q-tab name="wait" label="รอผล" @click="setSelectedTab('wait')" />
+      <q-tab name="resulted" label="ออกผลแล้ว" @click="setSelectedTab('resulted')" />
+      <q-tab class="q-pa-lg" name="all" label="ทั้งหมด" @click="setSelectedTab('all')" />
     </q-tabs>
   </div>
-  <div v-if="tab === 'wait' ">
+  <div v-if="tabView === 'wait' ">
     <div v-for="(item,i) in waitForResult" :key="i" class="q-pa-xs q-my-md col-xs-12 col-sm-6 col-md-4">
       <div class="row">
         <div class="col col-md"/>
@@ -89,7 +89,7 @@
 
     </div>
   </div>
-  <div v-if="tab === 'resulted'">
+  <div v-if="tabView === 'resulted'">
     <div v-for="(item,i) in resulted" :key="i" class="q-pa-xs q-my-md col-xs-12 col-sm-6 col-md-4">
       <div class="row">
         <div class="col col-md"/>
@@ -124,8 +124,13 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
-                    <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
+                    <div v-if="!item.IsCancel">
+                      <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
+                      <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
+                    </div>
+                    <div v-else>
+                      <p class="text-h6  ">฿ 0.00</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -158,7 +163,7 @@
 
     </div>
   </div>
-  <div v-if="tab === 'all'">
+  <div v-if="tabView === 'all'">
     <div v-for="(item,i) in allLotto" :key="i" class="q-pa-xs q-my-md col-xs-12 col-sm-6 col-md-4">
       <div class="row">
         <div class="col col-md"/>
@@ -193,21 +198,20 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <div v-if="!item.IsWaiting">
+                    <div v-if="!item.IsCancel">
                       <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
-                      <p v-else-if="findSum(item.boughtLottery) < 0" class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
+                      <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
                     </div>
                     <div v-else>
                       <p class="text-h6  ">฿ 0.00</p>
                     </div>
-
                   </div>
                 </div>
               </div>
               <div class="row ">
                 <div class="col-5 " >
                   <div class="q-mx-xs q-mt-sm">
-                    ..
+                    ........
                   </div>
                 </div>
                 <div class="col ">
@@ -233,7 +237,6 @@
 
     </div>
   </div>
-
 </q-page>
 </template>
 
@@ -251,9 +254,6 @@ export default {
     this.$store.dispatch('PlayHistory/getTicket_summary')
   },
   methods: {
-    insertDecimal (num) {
-      return (num / 100).toFixed(2)
-    },
     findSum (item) {
       let wimSum = 0
       let loseSum = 0
@@ -275,6 +275,9 @@ export default {
     async gotoNextPage (item) {
       await this.$store.dispatch('PlayHistory/setTicket_info', item)
       await this.$router.push('ticket_info')
+    },
+    setSelectedTab (tab) {
+      this.$store.dispatch('PlayHistory/getSelectedType',tab)
     }
   },
   computed: {
@@ -286,7 +289,10 @@ export default {
     },
     allLotto () {
       return this.$store.getters['PlayHistory/getAllLottoHistory']
-    }
+    },
+    tabView () {
+      return this.$store.getters['PlayHistory/getTabSelect']
+    },
   }
 }
 </script>

@@ -19,7 +19,7 @@ const state = {
 
 const mutations = {
   'SET_TIMEOUT_GAME' (state, payload) {
-    state.indexLotto[payload].isOpen = false
+    state[payload.type][payload.index].isOpen = false
   },
   'SET_INDEX_LOTTO_GAME' (state, payload) {
     state.indexLotto = payload

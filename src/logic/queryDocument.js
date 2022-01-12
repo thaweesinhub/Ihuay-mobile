@@ -86,13 +86,19 @@ export function resultLottoCreateOnFirstAndSixteen () {
 }
 
 export function LottoCreateOnSixteen () {
-  if (moment().locale('th').date() >= 16) {
+  if (moment().locale('th').date() <= 16) {
+    if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
+      return 'DATE_'.concat(
+        moment().date(16).subtract(7, 'day').subtract(1, 'month').locale('th').format('DD-MM-YYYY')
+      )
+    } else {
+      return 'DATE_'.concat(
+        moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
+      )
+    }
+  }  else {
     return 'DATE_'.concat(
-      moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
-    )
-  } else {
-    return 'DATE_'.concat(
-      moment().date(16).subtract(7, 'day').subtract(1, 'month').locale('th').format('DD-MM-YYYY')
+      moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
     )
   }
 }
@@ -118,6 +124,7 @@ export async function getThaiStockLotto (queryDate) {
 }
 
 export async function getJubyeekee (queryDate) {
+  console.log(queryDate)
   let document
   await getDoc(doc(JubyeekeeCollection, queryDate)).then((docSnap) => {
     if (docSnap.exists()) {
@@ -165,6 +172,10 @@ export async function queryDocument (collection, document) {
 }
 
 export async function queryDocumentWhere (col, value1, value2) {
+  if (value1.includes('round')) {
+    value1 = 'Jukyeekee'
+  }
+  console.log(col)
   const arr = []
   const q = query(collection(db, col), where('lottoType', '==', value1), where('applyTo', '==', value2))
   const querySnapshot = await getDocs(q)
@@ -190,4 +201,15 @@ export async function getTicketHistory (uid) {
   } else {
     return null
   }
+}
+
+export async function getJubyeekeeSentingNumber (id) {
+  const docRef = doc(db, "JukyeekeeGameRoom", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    return null
+  }
+
 }

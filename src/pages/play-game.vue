@@ -3,7 +3,8 @@
     <div class="q-ma-lg">
       <q-btn class="float-left" round icon="arrow_back" v-on:click="$router.go(-1)"/>
       <span class="text-h4 flex-center flex">{{gameInfo.gameName}}</span>
-      <div class="text-h6 flex flex-center ">เวลาเหลือ
+      <div class="text-h6 flex flex-center ">
+        <q-icon name="timer"/>
         <div class="q-ml-sm" v-if="gameInfo.gameTimeLeft > 0 ">
           <vue-countdown :time="gameInfo.gameTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="$router.go(-1)">
                   <span class="text-h6" >
@@ -14,6 +15,59 @@
         <div v-else>
           <span class="text-h6">ปิดรับแทง</span>
         </div>
+      </div>
+      <div class="text-right q-mt-md" v-if="gameInfo.gameType === 'jubyeekee'">
+        <q-btn label="ยิงเลข" v-on:click="shootNumberDialog = true"/>
+        <q-dialog  v-model="shootNumberDialog" >
+          <q-card class=" " style="width: 100%; ">
+            <div class="flex-center flex q-mb-md q-pa-lg">
+              <span class="text-h6">ยิงเลขจับยี้กี้รอบที่ ...</span>
+            </div>
+            <div class="flex flex-center">
+              <v-otp-input
+                ref="jubyeekeeOtpInput"
+                input-classes="otp-input-jubyeekee"
+                separator="-"
+                :num-inputs="5"
+                :should-auto-focus="false"
+                :is-input-num="true"
+                input-type="tel"
+                @on-change="handleJubyeekeeOnChange"
+                @on-complete="handleJubyeekeeComplete"
+              />
+            </div>
+            <div class="flex flex-center q-mt-md">
+              <q-btn label="เพิ่มเลข" class="q-mr-md" @click="sentJubyeekeeNumber()"/>
+              <q-btn label="ล้างค่า" @click="handleClearJubyeekee()"/>
+            </div>
+            <div class="q-mt-lg ">
+              <div class="flex-center flex q-pa-md">
+                <span>ผลรวมยอดแทงทั้งหมด</span>
+              </div>
+              <div class="flex-center flex ">
+                <span class="text-h6">{{yeekeeLists.length}}</span>
+              </div>
+              <div class="flex-center flex q-pa-md">
+                <span>รายชื่อผู้ที่เเทง</span>
+              </div>
+              <div class="row q-ma-xs"  v-for="(item, n) in yeekeeLists " :key="n" >
+                <div class="col-3 bg-negative" style="border-width: 1px;border-style: solid;border-color: #dddddd; border-radius: 5px">
+                  <div class="">
+                    <span class="flex flex-center text-subtitle1">ลำดับที่ {{n + 1 }}</span>
+                    <span class="flex flex-center text-subtitle1">{{item.yeekeeNumber}}</span>
+                  </div>
+                </div>
+                <div class="col bg-positive" style="border-width: 1px;border-style: solid;border-color: #dddddd; border-radius: 5px">
+                  <div class="" >
+                      <div class="q-ml-sm q-mt-xs"><q-icon name="account_circle"/> <span class="q-mr-sm text-subtitle1">ผู้ส่งเลข : </span> <span class="text-subtitle1">{{item.displayUsername}}</span></div>
+                      <q-separator class="q-my-xs"/>
+                      <div class="q-ml-sm q-mb-xs"><q-icon name="calendar_today"/><span class="q-mr-sm text-subtitle1"> ส่งเมื่อ : </span> <span class="text-subtitle1" >{{item.submittedTime}}</span> </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </q-card>
+        </q-dialog>
       </div>
     </div>
     <div class="row">
@@ -129,7 +183,7 @@
                 input-classes="otp-input"
                 separator="-"
                 :num-inputs="number_input"
-                :should-auto-focus="true"
+                :should-auto-focus="false"
                 :is-input-num="true"
                 input-type="tel"
                 @on-complete="handleOnComplete"
@@ -395,16 +449,17 @@
 import OtpInput from 'vue3-otp-input'
 import { Loading, useQuasar } from 'quasar'
 import { ref } from 'vue'
-import { NotifyError, NotifyWarning } from 'src/logic/handler'
+import { NotifyError, NotifySuccess, NotifyWarning } from 'src/logic/handler'
 import { betType, covertBetTypeENGtoTH, inRange } from 'src/logic/helper'
-import { queryDocument } from 'src/logic/queryDocument'
+import { getJubyeekeeSentingNumber, queryDocument } from 'src/logic/queryDocument'
 import {
   createDummy,
   createLottoOrder,
-  createNumberPrice,
+  createNumberPrice, sentingJubyeekee,
   updateNumberPrice,
   updateUserCredit
 } from 'src/logic/postDocument'
+import moment from 'moment'
 const columns = [
   {
     name: 'desc',
@@ -463,7 +518,9 @@ export default {
   data () {
     return {
       otpInput: ref(''),
+      jubyeekeeOtpInput: ref(''),
       selectType: 'three_up',
+      jubyeekeeShotNumber: 0,
       selectedAddOn: '',
       SelectLotto: [],
       priceLoop: [1, 5, 10, 20, 50],
@@ -476,8 +533,10 @@ export default {
       },
       number_memo_row: [],
       playhistory_row: [],
+      yeekeeLists: [],
       selectedHistory: [],
       selected: [],
+      shootNumberDialog: false,
       dialog: false,
       historyDialog: false,
       priceRate: {},
@@ -528,8 +587,17 @@ export default {
         mutations.forEach((item) => { this.addNumber(item, this.selectType) })
       }
     },
+    handleJubyeekeeComplete (value) {
+      this.jubyeekeeShotNumber = value
+    },
+    handleJubyeekeeOnChange (value) {
+      this.jubyeekeeShotNumber = value
+    },
     handleClearInput () {
       this.$refs.otpInput.clearInput()
+    },
+    handleClearJubyeekee () {
+      this.$refs.jubyeekeeOtpInput.clearInput()
     },
     handleAddMemo () {
       this.selected.forEach((item) => {
@@ -651,10 +719,6 @@ export default {
                 check = true
                 NotifyError(`เลข ${Number.num} เป็นยังไม่ได้ใส่ราคา`)
               }
-              // if (CloseNumber.some(item => item.number === Number.num)) {
-              //   NotifyError(`เลข ${Number.num} เป็นเลขปิด`)
-              //   check = true
-              // }
             })
           }
         }
@@ -788,6 +852,46 @@ export default {
       await this.$store.dispatch('PlayHistory/prepareInfoForPlayGame')
       this.number_memo_row = this.$store.getters['NumberMemo/userNumber_memo']
       this.playhistory_row = this.$store.getters['PlayHistory/getInfoForPlayGame']
+      const type = this.$store.getters['SelectedGameRoom/getSelectedGame']
+      if (type.gameType === 'jubyeekee') {
+        await this.getSendingNumber()
+      }
+    },
+    async getSendingNumber () {
+      const type = this.$store.getters['SelectedGameRoom/getSelectedGame']
+      const yeekee = await getJubyeekeeSentingNumber(type.gameDocID)
+      for (let x = 0; x < yeekee[type.gameKey].sendingNumber.length; x++) {
+        const obj = {}
+        obj.displayUsername = yeekee[type.gameKey].sendingNumber[x].displayUsername
+        obj.userName = yeekee[type.gameKey].sendingNumber[x].userName
+        obj.submittedTime = yeekee[type.gameKey].sendingNumber[x].submittedTime
+        obj.yeekeeNumber = yeekee[type.gameKey].sendingNumber[x].yeekeeNumber
+        this.yeekeeLists.push(obj)
+      }
+    },
+    async sentJubyeekeeNumber () {
+      // async submitYeekeenumber() {
+      String.prototype.replaceAt = function (index, replacement) {
+        return this.substr(0, index) + replacement + this.substr(index + replacement.length)
+      }
+      if (this.jubyeekeeShotNumber.length === 5) {
+        const username = this.$store.getters['userEntity/username']
+        const gameInfo = this.$store.getters['SelectedGameRoom/getSelectedGame']
+        const DocID = gameInfo.gameDocID
+        const gameKey = gameInfo.gameKey
+        const displayUsername = username.replaceAt(2, '***')
+        const userName = username
+        const submittedTime = moment().locale('th').format('DD-MM-YYYY HH:mm:ss')
+        const yeekeeNumber = parseInt(this.jubyeekeeShotNumber)
+        await sentingJubyeekee(DocID, gameKey, displayUsername, userName, submittedTime, yeekeeNumber).then(async () => {
+          NotifySuccess('ทำรายการสำเร็จ')
+          setTimeout(this.handleClearJubyeekee, 100)
+          this.yeekeeLists = []
+          await this.getSendingNumber()
+        })
+      } else {
+        NotifyWarning('กรอกเลขไม่ครบ')
+      }
     },
     async checkForPriceRate () {
       let dup = false
@@ -1173,6 +1277,16 @@ export default {
 .otp-input {
   width: 70px;
   height: 70px;
+  padding: 5px;
+  margin: 0 10px;
+  font-size: 35px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+.otp-input-jubyeekee {
+  width: 40px;
+  height: 40px;
   padding: 5px;
   margin: 0 10px;
   font-size: 35px;

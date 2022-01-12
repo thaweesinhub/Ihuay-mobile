@@ -1,4 +1,5 @@
 import { route } from 'quasar/wrappers'
+import { uid } from 'boot/firebase'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 
@@ -11,7 +12,7 @@ import routes from './routes'
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
@@ -24,6 +25,19 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE)
+  })
+
+  //
+  Router.beforeEach(async (to, from, next) => {
+    const auth = to.meta.requiresAuth
+    if (auth && !await store.getters['userEntity/username']) {
+      console.log('eeeeeeeeee')
+      next('/login')
+    } else {
+      console.log('xxxxxxxxx')
+
+      next()
+    }
   })
 
   return Router

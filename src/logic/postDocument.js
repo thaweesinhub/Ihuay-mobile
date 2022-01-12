@@ -1,5 +1,5 @@
 import { db } from 'boot/firebase'
-import { collection, addDoc, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, addDoc, deleteDoc, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore'
 import moment from 'moment'
 import { NotifyError, NotifySuccess } from 'src/logic/handler'
 
@@ -79,4 +79,16 @@ export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, 
   }).catch((error) => {
     NotifyError(error)
   }).then((docRef) => { NotifySuccess('ทำรายการสำเร็จ'); console.log(docRef.id) })
+}
+export async function sentingJubyeekee (docID, roundID, displayUsername, submittedTime, userName, yeekeeNumber) {
+  await setDoc(doc(db, 'JukyeekeeGameRoom', docID), {
+    [roundID]: {
+      sendingNumber: arrayUnion({
+        displayUsername: displayUsername,
+        submittedTime: submittedTime,
+        userName: userName,
+        yeekeeNumber: yeekeeNumber
+      })
+    }
+  }, { merge: true })
 }

@@ -8,10 +8,15 @@ const state = {
   resulted: null,
   selected: null,
   selectedLottoInfo: null,
-  forPlayGame: null
+  forPlayGame: null,
+  tab: 'wait'
 }
 
 const mutations = {
+  'SET_SELECT_TAB' (state, payload) {
+    state.tab = payload
+    console.log(state.tab)
+  },
   'SET_GAMEHISTORY' (state, payload) {
     state.gameHistory = payload
   },
@@ -26,7 +31,7 @@ const mutations = {
   },
   'PREPARE_DATA' (state, info) {
     const lotto = []
-    if (info.IsReWard) {
+    if (info.IsReWard && !info.IsCancel) {
       for (let x = 0; x < betType.length; x++) {
         if (info.boughtLottery[betType[x].key]) {
           for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
@@ -36,6 +41,19 @@ const mutations = {
           }
         }
       }
+    }
+    else if (info.IsReWard && info.IsCancel) {
+      for (let x = 0; x < betType.length; x++) {
+        if (info.boughtLottery[betType[x].key]) {
+          for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
+            info.boughtLottery[betType[x].key].nums[y].result = 'cancel'
+            info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
+            console.log(info)
+            lotto.push(info.boughtLottery[betType[x].key].nums[y])
+          }
+        }
+      }
+
     } else {
       for (let x = 0; x < betType.length; x++) {
         if (info.boughtLottery[betType[x].key]) {
@@ -75,9 +93,13 @@ const mutations = {
 }
 
 const actions = {
+  getSelectedType: async ({ commit}, payload) => {
+    commit('SET_SELECT_TAB', payload)
+  },
   getTicket_summary: async ({ commit, rootGetters }) => {
     const data = await getTicketHistory(rootGetters['userEntity/userID'])
     if (data) {
+      console.log(data)
       const resulted = filterResultedLotto(data)
       const waitForResult = filterWaitForResult(data)
       commit('SET_WAITFORRESULT', waitForResult)
@@ -94,6 +116,7 @@ const actions = {
   },
   prepareInfoForPlayGame: async ({ commit, getters }) => {
     const info = getters.getAllLottoHistory
+    console.log(info)
     commit('PREPARE_DATAFORPLAYGAME', info)
   }
 }
@@ -116,6 +139,9 @@ const getters = {
   },
   getInfoForPlayGame: state => {
     return state.forPlayGame
+  },
+  getTabSelect: state => {
+    return state.tab
   }
 
 }

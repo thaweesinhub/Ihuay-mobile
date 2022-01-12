@@ -247,7 +247,7 @@ export default defineComponent({
         this.isLogin = false
         sessionStorage.clear()
         this.$store.dispatch('userEntity/resetUserState')
-        // this.$router.push({ name: 'Login' })
+        this.$router.push('/')
         this.checkUserAuth()
       }).catch((error) => {
         alert(error)

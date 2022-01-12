@@ -12,7 +12,13 @@
     hide-bottom
   >
     <template v-slot:item="props">
-      <q-btn class="q-pa-xs col-xs-6 col-sm-3 col-md-3 " flat  :disable="!props.row.isOpen" >
+      <q-btn class="q-pa-xs col-xs-6 col-sm-3 col-md-3 " flat  :disable="!props.row.isOpen" v-on:click="gotoPlay(
+        props.row.key,
+        props.row.name,
+        props.row.unixTimeLeft,
+        props.row.unique_key,
+        props.row.docID,
+      )" >
         <div class="q-pa-xs col-xs-12 col-sm-12 col-md-12 ">
           <q-card class="" >
             <q-card-section  >
@@ -32,7 +38,7 @@
             <q-separator />
             <q-card-section class="flex flex-center" >
               <div v-if="props.row.unixTimeLeft > 0 && props.row.isOpen === true">
-                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex)">
+                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex, 'bankLotto')">
                   <span class="text-subtitle1" >
                     เหลือเวลา {{ totalHours }} ชั่วโมง  {{ minutes }} นาที {{ seconds }} วินาที
                   </span>
@@ -84,6 +90,22 @@ export default {
         images = require.context('src/assets/jubyeekee', false, /\.png$/)
         return images('./' + lottoName + '.png')
       }
+    },
+    closeRoom (index,type) {
+      this.$store.dispatch('LottoGame/setTimeoutLotto', {type:type, index:index})
+    },
+    async gotoPlay (key, name, close_date_time, unique_key, doc, dateTime) {
+      await this.$store.dispatch('SelectedGameRoom/setSelectedGame',
+        {
+          gameName: name,
+          gameKey: key,
+          gameTimeLeft: close_date_time,
+          gameUnique_key: unique_key,
+          gameDocID: doc,
+          gameType: 'lotto',
+          gameCloseDateTime: dateTime
+        })
+      await this.$router.push('playgame')
     }
   },
   computed: {
