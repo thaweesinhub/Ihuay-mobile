@@ -661,17 +661,21 @@ export default {
     gameInfo () {
       return this.$store.getters['SelectedGameRoom/getSelectedGame']
     }
-
   },
   methods: {
     handleOnComplete (value) {
-      if (!this.selectedAddOn) {
-        this.addNumber(value, this.selectType)
+      if (parseInt(value)) {
+        if (!this.selectedAddOn) {
+          this.addNumber(value, this.selectType)
+        } else {
+          const mutations = this.permutations(value)
+          mutations.forEach((item) => {
+            this.addNumber(item, this.selectType)
+          })
+        }
       } else {
-        const mutations = this.permutations(value)
-        mutations.forEach((item) => {
-          this.addNumber(item, this.selectType)
-        })
+        NotifyError('input error')
+        setTimeout(this.handleClearInput, 100)
       }
     },
     handleJubyeekeeComplete (value) {
