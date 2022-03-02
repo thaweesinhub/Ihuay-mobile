@@ -1,14 +1,15 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { getMessageFromErrorCode } from 'src/logic/handler'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from 'src/boot/firebase'
 import { Notify } from 'quasar'
+import { getMessageFromErrorCode, NotifyError } from 'src/logic/handler'
 const defaultState = () => {
   return {
     username: null,
     userID: null,
     user_Credit: null,
-    user_agent: null
+    user_agent: null,
+    userAffiliate_ID: null
   }
 }
 
@@ -16,7 +17,8 @@ const state = {
   username: null,
   userID: null,
   user_Credit: null,
-  user_agent: null
+  user_agent: null,
+  userAffiliate_ID: null
 }
 
 const mutations = {
@@ -32,6 +34,9 @@ const mutations = {
   'SET_USER_AGENT' (state, payload) {
     state.user_agent = payload
   },
+  'SET_USER_AFFILIATE_ID' (state, payload) {
+    state.userAffiliate_ID = payload
+  },
   resetState (state) {
     Object.assign(state, defaultState())
   }
@@ -43,7 +48,7 @@ const actions = {
   },
   login: ({ commit, dispatch }, authData) => {
     signInWithEmailAndPassword(getAuth(), authData.email, authData.password)
-      .then(res => {
+      .then((res) => {
         commit('SET_USER_ID', { userID: res.user.uid })
         dispatch('fetchUser')
         Notify.create({
@@ -52,8 +57,13 @@ const actions = {
           type: 'positive',
           message: 'Login Successfully'
         })
+        dispatch('pushRouter')
       })
-      .catch(error => console.log(getMessageFromErrorCode(error.code)))
+      .catch(error => {
+        console.log(error)
+        NotifyError(getMessageFromErrorCode(error.code))
+        return 'xxxxxxxxxxx'
+      })
   },
   fetchUser: ({ commit, state }) => {
     const docRef = doc(db, 'users', state.userID)
@@ -62,6 +72,7 @@ const actions = {
         commit('SET_USER_CREDIT', { user_Credit: res.data().credit })
         commit('SET_USER', { username: res.data().username })
         commit('SET_USER_AGENT', res.data().agentID)
+        commit('SET_USER_AFFILIATE_ID', res.data().affiliate_ID)
       } else { console.log('no doc') }
     }).catch(error => console.log(error))
   },
@@ -73,6 +84,10 @@ const actions = {
       message: 'Logout Successfully'
     })
     commit('resetState')
+  },
+  pushRouter () {
+    // don’t define your actions with ES6 arrow syntax (because “this” will mean something else as an effect). refer https://forum.quasar-framework.org/topic/3960/access-router-outside-vue/10
+    this.$router.push('result-reward')
   }
 }
 
@@ -88,7 +103,11 @@ const getters = {
   },
   userAgent (state) {
     return state.user_agent
+  },
+  userAffiliate_ID (state) {
+    return state.userAffiliate_ID
   }
+
 }
 
 export default {

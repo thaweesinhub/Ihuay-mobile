@@ -1,5 +1,5 @@
 import { prepareInfo } from 'src/logic/helper'
-import { queryDocument, queryDocumentWhere } from 'src/logic/queryDocument'
+import { getLottoLimitPerNumber, queryDocument, queryDocumentWhere } from 'src/logic/queryDocument'
 
 const state = {
   gameName: null,
@@ -10,18 +10,19 @@ const state = {
   gameType: null,
   gameNumberPriceCollection: null,
   gameCloseDateTime: null,
+  gameLottoLimited: null,
   gamePayRate: {},
   gamePriceMax: [],
   gameCloseNumber: []
 }
 const mutations = {
-  // setGovernmentLotto: async ({ commit }, payload) => {
   'SET_SELECT_GAME_ROOM'  (state, payload) {
     state.gameName = payload.gameName
     state.gameKey = payload.gameKey
     state.gameTimeLeft = payload.gameTimeLeft
     state.gameUnique_key = payload.gameUnique_key
     state.gameDocID = payload.gameDocID
+    state.gameLottoLimited = payload.limitPerNumber
     state.gameType = payload.gameType
     state.gameCloseDateTime = payload.gameCloseDateTime
     state.gamePayRate = payload.priceRate
@@ -37,8 +38,9 @@ const actions = {
   setSelectedGame: async ({ commit, state, rootGetters }, payload) => {
     const info = prepareInfo(payload.gameKey)
     console.log(info)
-    payload.gameCloseNumber = await queryDocumentWhere(info.lottoCloseNumber, payload.gameKey, rootGetters['userEntity/userAgent'])
+    payload.gameCloseNumber = await queryDocumentWhere(info.lottoCloseNumber, payload.gameKey, rootGetters['userEntity/userAffiliate_ID'])
     payload.gamePriceMax = await queryDocumentWhere(info.lottomax, payload.gameKey, rootGetters['userEntity/userAgent'])
+    payload.limitPerNumber = await getLottoLimitPerNumber(info.lottoLimited, rootGetters['userEntity/userAgent'])
     payload.priceRate = await queryDocument(info.priceRateCollection, rootGetters['userEntity/userAgent'])
     payload.gameNumberPriceCollection = info.gameNumberPrice
     commit('SET_SELECT_GAME_ROOM', payload)

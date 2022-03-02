@@ -1,10 +1,5 @@
 export const isLoginList = [
   {
-    title: 'Home (หน้าหลัก)',
-    icon: 'home',
-    link: 'Home'
-  },
-  {
     title: 'Play (แทงหวย)',
     icon: 'casino',
     link: 'select_game'
@@ -22,7 +17,7 @@ export const isLoginList = [
   {
     title: 'สร้างเลขชุด',
     icon: 'add_circle',
-    link: 'number-memo'
+    link: 'number_memo'
   }
 
 ]
@@ -32,10 +27,10 @@ export const notLoginList = [
     title: 'Lottory Result (ผลรางวัล)',
     icon: 'emoji_events',
     link: 'result-reward'
-  },
-  {
-    title: 'rule  (กฏกติตา)',
-    icon: 'gavel',
-    link: ''
   }
+  // {
+  //   title: 'rule  (กฏกติตา)',
+  //   icon: 'gavel',
+  //   link: ''
+  // }
 ]

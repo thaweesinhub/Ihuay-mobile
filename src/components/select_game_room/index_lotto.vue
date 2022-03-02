@@ -76,8 +76,8 @@ export default {
     }
   },
   methods: {
-    closeRoom (index,type) {
-      this.$store.dispatch('LottoGame/setTimeoutLotto', {type:type, index:index})
+    closeRoom (index, type) {
+      this.$store.dispatch('LottoGame/setTimeoutLotto', { type: type, index: index })
     },
     sss () {
       alert('sss')

@@ -91,8 +91,8 @@ export default {
         return images('./' + lottoName + '.png')
       }
     },
-    closeRoom (index,type) {
-      this.$store.dispatch('LottoGame/setTimeoutLotto', {type:type, index:index})
+    closeRoom (index, type) {
+      this.$store.dispatch('LottoGame/setTimeoutLotto', { type: type, index: index })
     },
     // eslint-disable-next-line camelcase
     async gotoPlay (key, name, close_date_time, unique_key, doc) {

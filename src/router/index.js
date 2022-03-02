@@ -1,5 +1,4 @@
 import { route } from 'quasar/wrappers'
-import { uid } from 'boot/firebase'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 
@@ -31,11 +30,8 @@ export default route(function ({ store }) {
   Router.beforeEach(async (to, from, next) => {
     const auth = to.meta.requiresAuth
     if (auth && !await store.getters['userEntity/username']) {
-      console.log('eeeeeeeeee')
       next('/login')
     } else {
-      console.log('xxxxxxxxx')
-
       next()
     }
   })

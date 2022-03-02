@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title class="text-weight-bold">
-          <span class="gt-sm">{{this.$route.name}}</span>
+          <span class="gt-sm">{{$t(`${this.$route.name}`)}}</span>
           <q-icon size="lg" class="header-icon q-pa-md lt-md" >
             <img  style="height: 45px"  src="../assets/Ihuay/IHuay_Logo.png" />
           </q-icon>
@@ -39,16 +39,16 @@
                 />
               </q-item>
 
-              <q-item class="flex flex-center"  clickable v-close-popup @click="setLanguage('en-US')">
-                <q-item-section class="q-mr-sm">
-                  <q-item-label>English</q-item-label>
-                </q-item-section>
-                <img
-                  style="width: 30px; height: 20px; margin-top: 1%"
-                  v-bind:src="iconPic('index_england','index')"
-                  :alt="iconPic('index_england','index')"
-                />
-              </q-item>
+<!--              <q-item class="flex flex-center"  clickable v-close-popup @click="setLanguage('en-US')">-->
+<!--                <q-item-section class="q-mr-sm">-->
+<!--                  <q-item-label>English</q-item-label>-->
+<!--                </q-item-section>-->
+<!--                <img-->
+<!--                  style="width: 30px; height: 20px; margin-top: 1%"-->
+<!--                  v-bind:src="iconPic('index_england','index')"-->
+<!--                  :alt="iconPic('index_england','index')"-->
+<!--                />-->
+<!--              </q-item>-->
             </q-list>
           </q-btn-dropdown>
         </div>

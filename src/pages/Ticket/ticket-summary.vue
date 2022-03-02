@@ -1,7 +1,7 @@
 <template>
 <q-page class="q-ma-md">
   <div class="flex flex-center q-ma-lg">
-    <span class="text-h4">{{this.$route.name}}</span>
+    <span class="text-h4">{{$t(`${this.$route.name}`)}}</span>
   </div>
   <div class="flex-center flex">
     <q-tabs
@@ -27,7 +27,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameID}} </span>
+                <span class="text-h5  ">{{item.gameName}} </span>
               </div>
 
             </q-card-section>
@@ -63,7 +63,6 @@
               <div class="row ">
                 <div class="col-5 " >
                   <div class="q-mx-xs q-mt-sm">
-                    ..
                   </div>
                 </div>
                 <div class="col ">
@@ -102,7 +101,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameID}}</span>
+                <span class="text-h5  ">{{item.gameName}}</span>
               </div>
 
             </q-card-section>
@@ -137,7 +136,6 @@
               <div class="row ">
                 <div class="col-5 " >
                   <div class="q-mx-xs q-mt-sm">
-                    ..
                   </div>
                 </div>
                 <div class="col ">
@@ -176,7 +174,7 @@
               </div>
               <div class="text-left">
 
-                <span class="text-h5  ">{{item.gameID}}</span>
+                <span class="text-h5  ">{{item.gameName}}</span>
               </div>
 
             </q-card-section>
@@ -211,7 +209,6 @@
               <div class="row ">
                 <div class="col-5 " >
                   <div class="q-mx-xs q-mt-sm">
-                    ........
                   </div>
                 </div>
                 <div class="col ">
@@ -277,7 +274,7 @@ export default {
       await this.$router.push('ticket_info')
     },
     setSelectedTab (tab) {
-      this.$store.dispatch('PlayHistory/getSelectedType',tab)
+      this.$store.dispatch('PlayHistory/getSelectedType', tab)
     }
   },
   computed: {
@@ -292,7 +289,7 @@ export default {
     },
     tabView () {
       return this.$store.getters['PlayHistory/getTabSelect']
-    },
+    }
   }
 }
 </script>

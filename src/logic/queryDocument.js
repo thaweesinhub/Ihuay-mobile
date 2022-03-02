@@ -1,6 +1,7 @@
 import { collection, doc, getDoc, getDocs, query, where, orderBy } from 'firebase/firestore'
 import moment from 'moment'
 import { db } from '../boot/firebase'
+import { numberTypeOptions } from 'src/logic/utility'
 
 const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
@@ -96,7 +97,7 @@ export function LottoCreateOnSixteen () {
         moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
       )
     }
-  }  else {
+  } else {
     return 'DATE_'.concat(
       moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
     )
@@ -124,7 +125,6 @@ export async function getThaiStockLotto (queryDate) {
 }
 
 export async function getJubyeekee (queryDate) {
-  console.log(queryDate)
   let document
   await getDoc(doc(JubyeekeeCollection, queryDate)).then((docSnap) => {
     if (docSnap.exists()) {
@@ -175,7 +175,6 @@ export async function queryDocumentWhere (col, value1, value2) {
   if (value1.includes('round')) {
     value1 = 'Jukyeekee'
   }
-  console.log(col)
   const arr = []
   const q = query(collection(db, col), where('lottoType', '==', value1), where('applyTo', '==', value2))
   const querySnapshot = await getDocs(q)
@@ -204,12 +203,29 @@ export async function getTicketHistory (uid) {
 }
 
 export async function getJubyeekeeSentingNumber (id) {
-  const docRef = doc(db, "JukyeekeeGameRoom", id);
-  const docSnap = await getDoc(docRef);
+  const docRef = doc(db, 'JukyeekeeGameRoom', id)
+  const docSnap = await getDoc(docRef)
   if (docSnap.exists()) {
     return docSnap.data()
   } else {
     return null
   }
-
 }
+
+export async function getLottoLimitPerNumber (collection, uid) {
+  let lottoLimitedRow = null
+  const lottoLimitedRef = doc(db, collection, uid )
+  const lottoLimitedSnap = await getDoc(lottoLimitedRef)
+  if (lottoLimitedSnap.exists()) {
+    lottoLimitedRow = {}
+    for (const item of numberTypeOptions) {
+      lottoLimitedRow[item.value] = lottoLimitedSnap.data()[item.value]
+      // lottoLimitedRow.push({
+      //   betType: item.value,
+      //   price: lottoLimitedSnap.data()[item.value]
+      // })
+    }
+  }
+  return lottoLimitedRow
+}
+

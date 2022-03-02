@@ -8,5 +8,10 @@ export default {
   two_down: '2 ตัวล่าง',
   run_up: 'วิ่งบน',
   run_down: 'วิ่งล่าง',
-  not_enough_credit: 'เครดิตคงเหลือไม่เพียงพอ'
+  not_enough_credit: 'เครดิตคงเหลือไม่เพียงพอ',
+  select_game: 'เลือกเกม',
+  playgame: 'แทงหวย',
+  Result: 'ผลรางวัล',
+  playHistory: 'โพยหวย',
+  number_memo: 'สร้างเลขชุด'
 }

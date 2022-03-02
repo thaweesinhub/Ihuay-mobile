@@ -63,6 +63,7 @@ export async function updateUserCredit (UserCredit, userID) {
 
 // eslint-disable-next-line camelcase
 export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, gameKey, gameName, betPrice, lottoCloseTime) {
+  let ref = null
   await addDoc(collection(db, 'boughtLottery'), {
     boughtLottery: Lotto,
     player: member,
@@ -73,22 +74,45 @@ export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, 
     betPrice: betPrice,
     display_date_time: moment().locale('th').format('L HH:mm '),
     lottoCloseTime: lottoCloseTime,
+    STATUS: 'waiting',
     IsReWard: false,
     IsCancel: false,
     IsWaiting: true
   }).catch((error) => {
     NotifyError(error)
-  }).then((docRef) => { NotifySuccess('ทำรายการสำเร็จ'); console.log(docRef.id) })
+  }).then((docRef) => {
+    console.log(docRef.id)
+    ref = docRef.id
+  })
+  return ref
 }
-export async function sentingJubyeekee (docID, roundID, displayUsername, submittedTime, userName, yeekeeNumber) {
+export async function sentingJubyeekee (docID, roundID, displayUsername, submittedTime, userName, yeekeeNumber,userID) {
   await setDoc(doc(db, 'JukyeekeeGameRoom', docID), {
     [roundID]: {
       sendingNumber: arrayUnion({
         displayUsername: displayUsername,
         submittedTime: submittedTime,
         userName: userName,
+        userID: userID,
         yeekeeNumber: yeekeeNumber
       })
     }
   }, { merge: true })
+}
+
+export async function addCreditTransaction (doneBy, doneTo, info, remainCredit, transactionCredit, transactionType) {
+  await addDoc(collection(db, 'creditTransaction'), {
+    doneBy: doneBy,
+    doneTo: doneTo,
+    info: info,
+    remainCredit: remainCredit,
+    transactionCredit: transactionCredit,
+    transactionDate: moment().locale('th').format('DD/MM/YYYY'),
+    transactionDateTime: moment().locale('th').format('DD/MM/YYYY HH:mm'),
+    transactionType: transactionType,
+    unixTime: moment().unix()
+  }).catch((err) => {
+    NotifyError('เกิดข้อผิดพลาด')
+    console.log(err)
+  })
 }

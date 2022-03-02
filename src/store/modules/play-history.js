@@ -41,8 +41,7 @@ const mutations = {
           }
         }
       }
-    }
-    else if (info.IsReWard && info.IsCancel) {
+    } else if (info.IsReWard && info.IsCancel) {
       for (let x = 0; x < betType.length; x++) {
         if (info.boughtLottery[betType[x].key]) {
           for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
@@ -53,7 +52,6 @@ const mutations = {
           }
         }
       }
-
     } else {
       for (let x = 0; x < betType.length; x++) {
         if (info.boughtLottery[betType[x].key]) {
@@ -68,32 +66,33 @@ const mutations = {
   },
   'PREPARE_DATAFORPLAYGAME' (state, info) {
     const lotto = []
-    for (let x = 0; x < info.length; x++) {
-      const obj = {}
-      obj.createTime = info[x].display_date_time
-      obj.displayname = info[x].gameID
-      obj.key = uuidv4()
-      obj.selectNumber = []
-      for (let y = 0; y < betType.length; y++) {
-        if (info[x].boughtLottery[betType[y].key]) {
-          for (let z = 0; z < info[x].boughtLottery[betType[y].key].nums.length; z++) {
-            const ob = {}
-            ob.value = info[x].boughtLottery[betType[y].key].nums[z].num
-            ob.type = info[x].boughtLottery[betType[y].key].name
-            obj.selectNumber.push(ob)
+    if (info) {
+      for (let x = 0; x < info.length; x++) {
+        const obj = {}
+        obj.createTime = info[x].display_date_time
+        obj.displayname = info[x].gameID
+        obj.key = uuidv4()
+        obj.selectNumber = []
+        for (let y = 0; y < betType.length; y++) {
+          if (info[x].boughtLottery[betType[y].key]) {
+            for (let z = 0; z < info[x].boughtLottery[betType[y].key].nums.length; z++) {
+              const ob = {}
+              ob.value = info[x].boughtLottery[betType[y].key].nums[z].num
+              ob.type = info[x].boughtLottery[betType[y].key].name
+              obj.selectNumber.push(ob)
+            }
           }
         }
+        lotto.push(obj)
       }
-      lotto.push(obj)
     }
-
     state.forPlayGame = lotto
   }
 
 }
 
 const actions = {
-  getSelectedType: async ({ commit}, payload) => {
+  getSelectedType: async ({ commit }, payload) => {
     commit('SET_SELECT_TAB', payload)
   },
   getTicket_summary: async ({ commit, rootGetters }) => {

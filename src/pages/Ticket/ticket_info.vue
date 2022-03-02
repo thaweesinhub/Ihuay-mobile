@@ -80,7 +80,7 @@
                     <span class="text-h4">{{item.num}}</span>
                   </div>
                   <div class="flex-center flex q-ma-xs">
-                    <span class="text-h6">{{item.key}}</span>
+                    <span class="text-h6">{{$t(`${item.key}`)}}</span>
                   </div>
                 </div>
               </div>
@@ -89,7 +89,14 @@
                 <div class="q-mt-sm q-pa-md">
                   <span class=" flex-center flex " >
                     เลขที่ออก
-                    <span v-if="!item.isWaiting" class="q-ml-xs text-h6" >{{item.result}}</span>
+                    <div v-if="!item.isWaiting">
+                      <div v-if="Array.isArray(item.result)">
+                        <span class="q-ml-xs text-h6" v-for="value in item.result" :key="value" >{{value}}</span>
+                      </div>
+                      <div v-else>
+                           <span  class="q-ml-xs text-h6" >{{item.result}}</span>
+                      </div>
+                    </div>
                   </span>
                 </div>
                 </div>

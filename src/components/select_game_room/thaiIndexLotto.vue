@@ -18,6 +18,7 @@
         props.row.unixTimeLeft,
         props.row.unique_key,
         props.row.docID,
+        props.row.display_close_date_time
       )" >
         <div class="q-pa-xs col-xs-12 col-sm-12 col-md-12 ">
           <q-card class="" >
@@ -91,9 +92,10 @@ export default {
         return images('./' + lottoName + '.png')
       }
     },
-    closeRoom (index,type) {
-      this.$store.dispatch('LottoGame/setTimeoutLotto', {type:type, index:index})
+    closeRoom (index, type) {
+      this.$store.dispatch('LottoGame/setTimeoutLotto', { type: type, index: index })
     },
+    // eslint-disable-next-line camelcase
     async gotoPlay (key, name, close_date_time, unique_key, doc, dateTime) {
       await this.$store.dispatch('SelectedGameRoom/setSelectedGame',
         {
