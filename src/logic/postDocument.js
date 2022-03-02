@@ -81,7 +81,6 @@ export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, 
   }).catch((error) => {
     NotifyError(error)
   }).then((docRef) => {
-    console.log(docRef.id)
     ref = docRef.id
   })
   return ref

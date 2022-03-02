@@ -98,7 +98,6 @@ const actions = {
   getTicket_summary: async ({ commit, rootGetters }) => {
     const data = await getTicketHistory(rootGetters['userEntity/userID'])
     if (data) {
-      console.log(data)
       const resulted = filterResultedLotto(data)
       const waitForResult = filterWaitForResult(data)
       commit('SET_WAITFORRESULT', waitForResult)

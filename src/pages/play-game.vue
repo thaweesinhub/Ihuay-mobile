@@ -765,7 +765,6 @@ export default {
           })
         } else NotifyWarning(`เลข ${number} ของประเภท ${this.$t(type)}  เป็นเลขปิด`)
       }
-      console.log(this.SelectLotto)
       setTimeout(this.handleClearInput, 100)
     },
     setSelectedBetType (value) {
@@ -912,8 +911,6 @@ export default {
       const sum = userCredit - this.total_bet
       const gameName = this.$store.getters['SelectedGameRoom/getSelectedGame'].gameName
       const userID = this.$store.getters['userEntity/userID']
-      console.log(userCredit)
-      console.log(sum)
       await Promise.all([
         await addCreditTransaction('System',
           this.$store.getters['userEntity/username'],
@@ -939,7 +936,6 @@ export default {
         this.total_bet,
         gameInfo.gameCloseDateTime
       )
-      console.log(ref)
       return ref
     },
     confirmDialog () {
@@ -957,7 +953,8 @@ export default {
           await Promise.all([
             await this.updateUserCredit(gameRef),
             await this.updatePriceRateinDB(),
-            await this.$store.dispatch('userEntity/fetchUser')
+            await this.$store.dispatch('userEntity/fetchUser'),
+            await this.$router.push('/ticket_summary')
           ])
         } else { NotifyError('เกิดข้อผิดพลาดขึ้น') }
         Loading.hide()
@@ -1053,7 +1050,6 @@ export default {
       const info = this.$store.getters['SelectedGameRoom/getSelectedGame']
       const agentID = this.$store.getters['userEntity/userAgent']
       const ratePrize = info.gamePayRate
-      console.log(info.gameLottoLimited)
       let levelRate = await queryDocument(info.gameNumberPriceCollection, info.gameUnique_key)
       if (!levelRate) {
         await createDummy(info.gameNumberPriceCollection, info.gameUnique_key)
@@ -1070,7 +1066,6 @@ export default {
                   if (levelRate[agentID][betType[i].key]['rateNumber_'.concat(this.SelectLotto[x].select_number[y].num)]) {
                     const rateFromDB = levelRate[agentID][betType[i].key]['rateNumber_'.concat(this.SelectLotto[x].select_number[y].num)]
                     const sum = rateFromDB + this.SelectLotto[x].select_number[y].price
-                    console.log(info.gameLottoLimited[betType[i].key])
                     if (info.gameLottoLimited[betType[i].key] > 0) {
                       if (sum > info.gameLottoLimited[betType[i].key]) {
                         dup = true
@@ -1136,7 +1131,6 @@ export default {
                     }
                   } else {
                     const sum = this.SelectLotto[x].select_number[y].price
-                    console.log(info.gameLottoLimited[betType[i].key])
                     if (info.gameLottoLimited[betType[i].key] > 0) {
                       if (sum > info.gameLottoLimited[betType[i].key]) {
                         dup = true
@@ -1203,7 +1197,6 @@ export default {
                   }
                 } else {
                   const sum = this.SelectLotto[x].select_number[y].price
-                  console.log(info.gameLottoLimited[betType[i].key])
                   if (info.gameLottoLimited[betType[i].key] > 0) {
                     if (sum > info.gameLottoLimited[betType[i].key]) {
                       dup = true
@@ -1270,7 +1263,6 @@ export default {
                 }
               } else {
                 const sum = this.SelectLotto[x].select_number[y].price
-                console.log(info.gameLottoLimited[betType[i].key])
                 if (info.gameLottoLimited[betType[i].key] > 0) {
                   if (sum > info.gameLottoLimited[betType[i].key]) {
                     dup = true
