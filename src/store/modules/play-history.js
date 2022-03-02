@@ -15,7 +15,6 @@ const state = {
 const mutations = {
   'SET_SELECT_TAB' (state, payload) {
     state.tab = payload
-    console.log(state.tab)
   },
   'SET_GAMEHISTORY' (state, payload) {
     state.gameHistory = payload
@@ -47,7 +46,6 @@ const mutations = {
           for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
             info.boughtLottery[betType[x].key].nums[y].result = 'cancel'
             info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
-            console.log(info)
             lotto.push(info.boughtLottery[betType[x].key].nums[y])
           }
         }
@@ -114,7 +112,6 @@ const actions = {
   },
   prepareInfoForPlayGame: async ({ commit, getters }) => {
     const info = getters.getAllLottoHistory
-    console.log(info)
     commit('PREPARE_DATAFORPLAYGAME', info)
   }
 }
