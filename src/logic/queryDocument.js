@@ -214,18 +214,13 @@ export async function getJubyeekeeSentingNumber (id) {
 
 export async function getLottoLimitPerNumber (collection, uid) {
   let lottoLimitedRow = null
-  const lottoLimitedRef = doc(db, collection, uid )
+  const lottoLimitedRef = doc(db, collection, uid)
   const lottoLimitedSnap = await getDoc(lottoLimitedRef)
   if (lottoLimitedSnap.exists()) {
     lottoLimitedRow = {}
     for (const item of numberTypeOptions) {
       lottoLimitedRow[item.value] = lottoLimitedSnap.data()[item.value]
-      // lottoLimitedRow.push({
-      //   betType: item.value,
-      //   price: lottoLimitedSnap.data()[item.value]
-      // })
     }
   }
   return lottoLimitedRow
 }
-

@@ -85,7 +85,7 @@ export async function createLottoOrder (gameUnique_key, Lotto, member, agentID, 
   })
   return ref
 }
-export async function sentingJubyeekee (docID, roundID, displayUsername, submittedTime, userName, yeekeeNumber,userID) {
+export async function sentingJubyeekee (docID, roundID, displayUsername, submittedTime, userName, yeekeeNumber, userID) {
   await setDoc(doc(db, 'JukyeekeeGameRoom', docID), {
     [roundID]: {
       sendingNumber: arrayUnion({

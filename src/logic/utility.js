@@ -30,5 +30,5 @@ export const numberTypeOptions = [
   {
     label: 'วิ่งล่าง',
     value: 'run_down'
-  },
+  }
 ]

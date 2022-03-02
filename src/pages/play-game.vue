@@ -726,7 +726,6 @@ export default {
       }
     },
     async handleSentLotto () {
-      const checkForMaxPerNumber = this.checkMaxPerNumber()
       const isDupilcateCloseNum = this.checkForCloseNumber()
       const isMax = this.checkForMaxNumber()
       const checkPriceRate = await this.checkForPriceRate()
@@ -1039,7 +1038,7 @@ export default {
         const userName = username
         const submittedTime = moment().locale('th').format('DD/MM/YYYY HH:mm:ss')
         const yeekeeNumber = parseInt(this.jubyeekeeShotNumber)
-        await sentingJubyeekee(DocID, gameKey, displayUsername,submittedTime,userName, yeekeeNumber, userID).then(async () => {
+        await sentingJubyeekee(DocID, gameKey, displayUsername, submittedTime, userName, yeekeeNumber, userID).then(async () => {
           NotifySuccess('ทำรายการสำเร็จ')
           setTimeout(this.handleClearJubyeekee, 100)
           this.yeekeeLists = []
