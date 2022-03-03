@@ -60,12 +60,7 @@ export function prepareInfo (gameKey) {
     gameKey === 'lotto_thai_gorverment' ||
     gameKey === 'lotto_baac' ||
     gameKey === 'lotto_gsb' ||
-    gameKey === 'lotto_maylasia' ||
-    gameKey === 'lotto_thai_gorverment' ||
-    gameKey === 'thai_stock_afternoon' ||
-    gameKey === 'thai_stock_evening' ||
-    gameKey === 'thai_stock_morning' ||
-    gameKey === 'thai_stock_noon'
+    gameKey === 'lotto_maylasia'
   ) {
     info.priceRateCollection = 'lottoPrize'
     info.lottomax = 'lottomax'
@@ -100,7 +95,7 @@ export const betType = [
 export function filterResultedLotto (payload) {
   const arr = []
   payload.forEach((item) => {
-    if (item.IsWaiting === false && item.IsReWard === true) {
+    if (item.STATUS === 'resulted') {
       arr.push(item)
     }
   })
@@ -110,7 +105,7 @@ export function filterResultedLotto (payload) {
 export function filterWaitForResult (payload) {
   const arr = []
   payload.forEach((item) => {
-    if (item.IsWaiting === true && item.IsReWard === false) {
+    if (item.STATUS === 'waiting') {
       arr.push(item)
     }
   })

@@ -5,7 +5,7 @@ import { numberTypeOptions } from 'src/logic/utility'
 
 const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
-const ThaiStockLottoCollection = collection(db, 'testLotto')
+const ThaiStockLottoCollection = collection(db, 'testIndexlotto')
 const JubyeekeeCollection = collection(db, 'JukyeekeeGameRoom')
 // const Number_memoCollection = collection(db, 'setNumber')
 

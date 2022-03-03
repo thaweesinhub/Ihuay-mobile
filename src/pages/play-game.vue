@@ -664,7 +664,8 @@ export default {
   },
   methods: {
     handleOnComplete (value) {
-      if (parseInt(value)) {
+      let isnum = /^\d+$/.test(value);
+      if (isnum) {
         if (!this.selectedAddOn) {
           this.addNumber(value, this.selectType)
         } else {

@@ -175,6 +175,7 @@ const actions = {
     const ThaiLotto = await getThaiStockLotto(documentDate())
     const Lotto = []
     if (ThaiLotto) {
+      console.log(ThaiLotto)
       for (let x = 0; x < ThaiStock.length; x++) {
         if (ThaiLotto[ThaiStock[x].key] !== undefined) {
           Lotto.push({

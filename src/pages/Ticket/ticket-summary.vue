@@ -5,7 +5,7 @@
   </div>
   <div class="flex-center flex">
     <q-tabs
-      v-model="tabView"
+      v-model="tab"
       align="justify"
       :breakpoint="0"
     >
@@ -49,7 +49,7 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <div v-if="!item.IsWaiting">
+                    <div v-if="item.STATUS !== 'waiting'">
                       <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
                       <p v-else-if="findSum(item.boughtLottery) < 0" class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
                     </div>
@@ -66,10 +66,10 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div v-if="item.IsWaiting" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-if="item.STATUS === 'waiting'" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     รอผล
                   </div>
-                  <div v-else class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-else-if="item.STATUS === 'resulted'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     ผลออกแล้ว
                   </div>
                 </div>
@@ -123,7 +123,7 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <div v-if="!item.IsCancel">
+                    <div v-if="item.STATUS !== 'cancel'">
                       <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
                       <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
                     </div>
@@ -139,11 +139,14 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div v-if="item.IsWaiting" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-if="item.STATUS === 'waiting'" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     รอผล
                   </div>
-                  <div v-else class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-else-if="item.STATUS === 'resulted'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     ผลออกแล้ว
+                  </div>
+                  <div v-else-if="item.STATUS === 'cancel'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                    ยกเลิก
                   </div>
                 </div>
                 <div class="col ">
@@ -196,7 +199,7 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <div v-if="!item.IsCancel">
+                    <div v-if="item.STATUS !== 'cancel'">
                       <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
                       <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
                     </div>
@@ -212,11 +215,17 @@
                   </div>
                 </div>
                 <div class="col ">
-                  <div v-if="item.IsWaiting" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-if="item.STATUS === 'waiting'" class="bg-warning q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     รอผล
                   </div>
-                  <div v-else class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-else-if="item.STATUS === 'resulted'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     ผลออกแล้ว
+                  </div>
+                  <div v-else-if="item.STATUS === 'cancel'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                    ยกเลิก
+                  </div>
+                  <div v-else-if="item.STATUS === 'return'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                    คืนโพย
                   </div>
                 </div>
                 <div class="col ">
@@ -274,6 +283,7 @@ export default {
       await this.$router.push('ticket_info')
     },
     setSelectedTab (tab) {
+      this.tab = tab
       this.$store.dispatch('PlayHistory/getSelectedType', tab)
     }
   },
