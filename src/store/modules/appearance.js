@@ -1,6 +1,7 @@
 import { Dark, LocalStorage, Notify } from 'quasar'
 const state = {
-  isDarKtheme: LocalStorage.getItem('darkMode')
+  isDarKtheme: LocalStorage.getItem('darkMode'),
+  language: LocalStorage.getItem('language')
 }
 
 const mutations = {
@@ -14,12 +15,19 @@ const mutations = {
       type: 'positive',
       message: 'Changing Theme'
     })
+  },
+  'CHANGE_LANGUAGE' (state, payload) {
+    state.language = payload
+    LocalStorage.set('language', payload)
   }
 }
 
 const actions = {
   setUserTheme: ({ commit, state }, isDarkMode) => {
     commit('CHANGE_THEME', { isDarktheme: isDarkMode.isDarkMode })
+  },
+  setUserLanguage: ({ commit, state }, selectLanguage) => {
+    commit('')
   }
 }
 

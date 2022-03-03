@@ -11,14 +11,46 @@
           @click="toggleLeftDrawer"
         />
         <q-toolbar-title class="text-weight-bold">
-          <span class="gt-sm">{{this.$route.name}}</span>
+          <span class="gt-sm">{{$t(`${this.$route.name}`)}}</span>
           <q-icon size="lg" class="header-icon q-pa-md lt-md" >
             <img  style="height: 45px"  src="../assets/Ihuay/IHuay_Logo.png" />
           </q-icon>
         </q-toolbar-title>
 
         <div>
-          <span> Drawer> </span>
+          <q-btn-dropdown flat   >
+            <template v-slot:label>
+              <div class="row items-center no-wrap">
+                <q-icon left :name="flag" />
+                <div class="text-center">
+                  {{$t('selected_lang')}}
+                </div>
+              </div>
+            </template>
+            <q-list >
+              <q-item class="flex flex-center"  clickable v-close-popup @click="setLanguage('th-THAI')">
+                <q-item-section class="q-mr-sm">
+                  <q-item-label>ภาษาไทย</q-item-label>
+                </q-item-section>
+                <img
+                  style="width: 30px; height: 20px; margin-top: 1%"
+                  v-bind:src="iconPic('Thailand','index')"
+                  :alt="iconPic('Thailand','index')"
+                />
+              </q-item>
+
+<!--              <q-item class="flex flex-center"  clickable v-close-popup @click="setLanguage('en-US')">-->
+<!--                <q-item-section class="q-mr-sm">-->
+<!--                  <q-item-label>English</q-item-label>-->
+<!--                </q-item-section>-->
+<!--                <img-->
+<!--                  style="width: 30px; height: 20px; margin-top: 1%"-->
+<!--                  v-bind:src="iconPic('index_england','index')"-->
+<!--                  :alt="iconPic('index_england','index')"-->
+<!--                />-->
+<!--              </q-item>-->
+            </q-list>
+          </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
@@ -119,6 +151,18 @@ export default defineComponent({
     },
     userCredit () {
       return this.$store.getters['userEntity/user_Credit']
+    },
+    // eslint-disable-next-line vue/return-in-computed-property
+    flag () {
+      // console.log(this.$i18n.locale)
+      // if (this.$i18n.locale === 'th-THAI') {
+      //   return  'https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
+      // } else if ()
+
+      switch (this.$i18n.locale) {
+        case 'th-THAI' : return 'img:https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_Thailand.svg'
+        case 'en-US' : return 'img:https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Flag_of_England.svg/2560px-Flag_of_England.svg.png'
+      }
     }
   },
 
@@ -144,9 +188,16 @@ export default defineComponent({
   },
   async created () {
     const value = this.$q.localStorage.getItem('darkMode')
-    // const x = this.$store.getters['appearance/userIsDarkMode']
     this.$q.dark.set(value)
     await this.checkUserAuth()
+    if (!this.$q.localStorage.getItem('language')) {
+      this.$q.localStorage.set('language', 'th-THAI')
+      const lang = this.$q.localStorage.getItem('language')
+      this.$i18n.locale = lang
+    } else {
+      const lang = this.$q.localStorage.getItem('language')
+      this.$i18n.locale = lang
+    }
   },
 
   methods: {
@@ -163,12 +214,32 @@ export default defineComponent({
         }
       })
     },
+    iconPic (lottoName, type) {
+      let images
+      if (type === 'index') {
+        images = require.context('src/assets/countryIcon', false, /\.png$/)
+        return images('./' + lottoName + '.png')
+      } else if (type === 'malay') {
+        images = require.context('src/assets/countryIcon', false, /\.png$/)
+        return images('./' + lottoName + '.png')
+      } else if (type === 'bank') {
+        images = require.context('src/assets/bankIcon', false, /\.jpeg$/)
+        return images('./' + lottoName + '.jpeg')
+      } else if (type === 'Jukyeekee') {
+        images = require.context('src/assets/jubyeekee', false, /\.png$/)
+        return images('./' + lottoName + '.png')
+      }
+    },
     navigationPage (path) {
-      this.$router.push({ path: `${path}` })
+      this.$router.push(path)
     },
     setThemeAppearance () {
       this.isDarkModeActive = !this.isDarkModeActive
       this.$store.dispatch('appearance/setUserTheme', { isDarkMode: this.isDarkModeActive })
+    },
+    setLanguage (lang) {
+      this.$q.localStorage.set('language', lang)
+      this.$i18n.locale = lang
     },
     logout () {
       const auth = getAuth()
@@ -176,7 +247,7 @@ export default defineComponent({
         this.isLogin = false
         sessionStorage.clear()
         this.$store.dispatch('userEntity/resetUserState')
-        // this.$router.push({ name: 'Login' })
+        this.$router.push('/')
         this.checkUserAuth()
       }).catch((error) => {
         alert(error)

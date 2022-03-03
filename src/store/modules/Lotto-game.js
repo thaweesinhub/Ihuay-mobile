@@ -19,7 +19,7 @@ const state = {
 
 const mutations = {
   'SET_TIMEOUT_GAME' (state, payload) {
-    state.indexLotto[payload].isOpen = false
+    state[payload.type][payload.index].isOpen = false
   },
   'SET_INDEX_LOTTO_GAME' (state, payload) {
     state.indexLotto = payload
@@ -85,6 +85,7 @@ const actions = {
               key: ThaiLotto[x].key,
               for_countdown: lotto[ThaiLotto[x].key].for_countdown,
               unique_key: lotto[ThaiLotto[x].key].unique_key,
+              docID: lottoCreateOnFirstAndSixteen(),
               display_close_date_time: lotto[ThaiLotto[x].key].display_close_date_time,
               unixTimeLeft: getUnixValue(lotto[ThaiLotto[x].key].for_countdown),
               isOpen: checkIfTimeAlredyOver(lotto[ThaiLotto[x].key].for_countdown)
@@ -92,13 +93,13 @@ const actions = {
           }
         } else {
           //! in case lotto not created yet just create dummy to display same as below
-          Lotto.push({
-            name: 'หวยรัฐบาลไทย',
-            key: ThaiLotto[x].key,
-            display_close_date_time: 'ปิด จะเปิดให้แทง 7 วันก่อนหวยออก',
-            unixTimeLeft: getUnixValue('12/12/1994 12:44'),
-            isOpen: false
-          })
+          // Lotto.push({
+          //   name: 'หวยรัฐบาลไทย',
+          //   key: ThaiLotto[x].key,
+          //   display_close_date_time: 'ปิด จะเปิดให้แทง 7 วันก่อนหวยออก',
+          //   unixTimeLeft: getUnixValue('12/12/1994 12:44'),
+          //   isOpen: false
+          // })
           console.log('error')
         }
       }
@@ -125,6 +126,7 @@ const actions = {
             Lotto.push({
               name: baccLotto[BankLotto[x].key].name,
               key: BankLotto[x].key,
+              docID: LottoCreateOnSixteen(),
               unique_key: baccLotto[BankLotto[x].key].unique_key,
               display_close_date_time: baccLotto[BankLotto[x].key].display_close_date_time,
               unixTimeLeft: getUnixValue(baccLotto[BankLotto[x].key].for_countdown),
@@ -149,6 +151,7 @@ const actions = {
             Lotto.push({
               name: gsbLotto[BankLotto[x].key].name,
               key: BankLotto[x].key,
+              docID: lottoCreateOnFirstAndSixteen(),
               unique_key: gsbLotto[BankLotto[x].key].unique_key,
               display_close_date_time: gsbLotto[BankLotto[x].key].display_close_date_time,
               unixTimeLeft: getUnixValue(gsbLotto[BankLotto[x].key].for_countdown),
@@ -172,11 +175,13 @@ const actions = {
     const ThaiLotto = await getThaiStockLotto(documentDate())
     const Lotto = []
     if (ThaiLotto) {
+      console.log(ThaiLotto)
       for (let x = 0; x < ThaiStock.length; x++) {
         if (ThaiLotto[ThaiStock[x].key] !== undefined) {
           Lotto.push({
             name: ThaiLotto[ThaiStock[x].key].name,
             key: ThaiStock[x].key,
+            docID: documentDate(),
             unique_key: ThaiLotto[ThaiStock[x].key].unique_key,
             display_close_date_time: ThaiLotto[ThaiStock[x].key].display_close_date_time,
             unixTimeLeft: getUnixValue(ThaiLotto[ThaiStock[x].key].for_countdown),
@@ -198,6 +203,7 @@ const actions = {
             name: data[roundID].name,
             key: roundID,
             unique_key: data[roundID].unique_key,
+            docID: documentDate(),
             display_close_date_time: data[roundID].display_close_date_time,
             unixTimeLeft: getUnixValue(data[roundID].for_countdown),
             isOpen: checkIfTimeAlredyOver(data[roundID].for_countdown)

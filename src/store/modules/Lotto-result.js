@@ -47,7 +47,6 @@ const actions = {
     if (lotto) {
       for (let x = 0; x < IndexLotto.length; x++) {
         if (lotto[IndexLotto[x].key] !== undefined) {
-          console.log(lotto[IndexLotto[x].key].docID)
           Lotto.push({
             name: lotto[IndexLotto[x].key].name,
             key: IndexLotto[x].key,
@@ -80,7 +79,7 @@ const actions = {
           }
         } else {
           //! in case lotto not created yet just create dummy to display same as below
-          Lotto.push(createDummyGovermentLotto())
+          // Lotto.push(createDummyGovermentLotto())
         }
       }
     } else {
@@ -132,10 +131,10 @@ const actions = {
         if (BankLotto[x].key === 'lotto_gsb') {
           if (gsbLotto[BankLotto[x].key] !== undefined) {
             Lotto.push({
-              name: baccLotto[BankLotto[x].key].name,
+              name: gsbLotto[BankLotto[x].key].name,
               key: BankLotto[x].key,
-              result_three_up: checkLottoAlreadyHaveResult(baccLotto[BankLotto[x].key].result_three_up),
-              result_two_down: checkLottoAlreadyHaveResult(baccLotto[BankLotto[x].key].result_two_down)
+              result_three_up: checkLottoAlreadyHaveResult(gsbLotto[BankLotto[x].key].result_three_up),
+              result_two_down: checkLottoAlreadyHaveResult(gsbLotto[BankLotto[x].key].result_two_down)
             })
           } else {
             Lotto.push(dummyGSBLotto)

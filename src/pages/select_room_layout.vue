@@ -13,7 +13,7 @@
               align="left"
               class=""
               :breakpoint="0"
-              @click="testing()"
+              @click="this.ChangingView()"
             >
               <q-tab name="lotto" label="หวย" />
               <q-tab name="yeekee" label="จับยี่กี 24 ซม" />
@@ -61,7 +61,7 @@ export default {
       this.$store.dispatch('LottoGame/getThaiLotto')
       this.$store.dispatch('LottoGame/getJubyeekee')
     },
-    testing () {
+    ChangingView () {
       this.$store.dispatch('LottoGame/changeView', this.tab)
     }
   },

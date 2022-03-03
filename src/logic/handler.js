@@ -1,4 +1,4 @@
-import { Notify, Dialog } from 'quasar'
+import { Notify } from 'quasar'
 export function getMessageFromErrorCode (ErrorCode) {
   switch (ErrorCode) {
     case 'ERROR_EMAIL_ALREADY_IN_USE':
@@ -29,12 +29,14 @@ export function getMessageFromErrorCode (ErrorCode) {
 export function NotifyWarning (msg) {
   Notify.create({
     type: 'warning',
+    group: false,
     message: `${msg}`
   })
 }
 
 export function NotifyError (msg) {
   Notify.create({
+    group: false,
     type: 'negative',
     message: `${msg}`
   })
@@ -44,22 +46,5 @@ export function NotifySuccess (msg) {
   Notify.create({
     type: 'positive',
     message: `${msg}`
-  })
-}
-
-export async function ConfrimDialog (msg) {
-  await Dialog.create({
-    title: 'โปรดตรวจสอบความถูกต้อง',
-    message: `${msg}`,
-    cancel: true
-  }).onOk(() => {
-    console.log('>>>> OK')
-    return true
-  }).onOk(() => {
-    return true
-  }).onCancel(() => {
-    return false
-  }).onDismiss(() => {
-    return false
   })
 }

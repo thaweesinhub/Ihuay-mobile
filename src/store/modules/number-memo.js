@@ -18,7 +18,6 @@ const actions = {
   },
   getUserNumberMemo: async ({ commit, rootGetters }) => {
     const numberMemoList = await getNumberMemo(rootGetters['userEntity/userID'])
-    console.log(numberMemoList)
     if (numberMemoList) {
       commit('SET_USER_NUMBER_MEMO', numberMemoList)
     }

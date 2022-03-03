@@ -7,7 +7,7 @@
       <q-input filled bottom-slots
                class="q-mb-md"
                v-model="mUsername"
-               counter maxlength="12"
+               counter maxlength="18"
                :rules="[val => !!val || 'Field is required']"
       >
         <template v-slot:prepend>
@@ -28,7 +28,7 @@
       <q-input filled bottom-slots
                v-model="mPassword"
                type="password"
-               counter maxlength="12"
+               counter maxlength="18"
                :rules="[val => !!val || 'Field is required']"
       >
         <template v-slot:prepend>
@@ -74,11 +74,11 @@ export default {
   methods: {
     async confrimBtnPress () {
       if (this.mUsername && this.mUsername) {
-        await this.$store.dispatch('userEntity/login', {
+        const x = await this.$store.dispatch('userEntity/login', {
           email: this.mUsername.concat('@email.com'),
           password: this.mPassword
         })
-        this.$router.push({ path: 'result-reward' })
+        console.log(x)
       }
     }
   }
