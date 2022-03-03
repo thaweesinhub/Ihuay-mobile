@@ -221,10 +221,10 @@
                   <div v-else-if="item.STATUS === 'resulted'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     ผลออกแล้ว
                   </div>
-                  <div v-else-if="item.STATUS === 'cancel'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-else-if="item.STATUS === 'cancel'" class="bg-negative q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     ยกเลิก
                   </div>
-                  <div v-else-if="item.STATUS === 'return'" class="bg-positive q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
+                  <div v-else-if="item.STATUS === 'return'" class="bg-negative q-pa-xs q-mx-xs q-mt-sm rounded-borders flex flex-center">
                     คืนโพย
                   </div>
                 </div>
@@ -253,7 +253,7 @@ export default {
   name: 'ticket-summary',
   data () {
     return {
-      tab: 'wait'
+      tab: this.$store.getters['PlayHistory/getTabSelect']
     }
   },
   created () {

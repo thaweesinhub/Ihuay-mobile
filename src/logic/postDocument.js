@@ -57,7 +57,20 @@ export async function updateUserCredit (UserCredit, userID) {
   await updateDoc(docRef, {
     credit: UserCredit
   }).catch((error) => {
+    console.log('error @ updateUserCredit')
+    console.log(error)
     NotifyError(error)
+  })
+}
+
+export async function changeBetStatus (docID, status) {
+  const docRef = doc(db, 'boughtLottery', docID)
+  await updateDoc(docRef, {
+    STATUS: status
+  }).catch((error) => {
+    console.log('error @ changeBetStatus')
+    console.log(error)
+    NotifyError('เกิดผิดพลาดขึ้น')
   })
 }
 
@@ -111,6 +124,7 @@ export async function addCreditTransaction (doneBy, doneTo, info, remainCredit, 
     transactionType: transactionType,
     unixTime: moment().unix()
   }).catch((err) => {
+    console.log('@error @ addCreditTransaction')
     NotifyError('เกิดข้อผิดพลาด')
     console.log(err)
   })

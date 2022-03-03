@@ -30,35 +30,49 @@ const mutations = {
   },
   'PREPARE_DATA' (state, info) {
     const lotto = []
-    if (info.IsReWard && !info.IsCancel) {
-      for (let x = 0; x < betType.length; x++) {
-        if (info.boughtLottery[betType[x].key]) {
-          for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
-            info.boughtLottery[betType[x].key].nums[y].result = info.result.calculateResult[betType[x].key]
-            info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
-            lotto.push(info.boughtLottery[betType[x].key].nums[y])
+    switch (info.STATUS) {
+      case 'resulted' :
+        for (let x = 0; x < betType.length; x++) {
+          if (info.boughtLottery[betType[x].key]) {
+            for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
+              info.boughtLottery[betType[x].key].nums[y].result = info.result.calculateResult[betType[x].key]
+              info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
+              lotto.push(info.boughtLottery[betType[x].key].nums[y])
+            }
           }
         }
-      }
-    } else if (info.IsReWard && info.IsCancel) {
-      for (let x = 0; x < betType.length; x++) {
-        if (info.boughtLottery[betType[x].key]) {
-          for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
-            info.boughtLottery[betType[x].key].nums[y].result = 'cancel'
-            info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
-            lotto.push(info.boughtLottery[betType[x].key].nums[y])
+        break
+      case 'cancel' :
+        for (let x = 0; x < betType.length; x++) {
+          if (info.boughtLottery[betType[x].key]) {
+            for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
+              info.boughtLottery[betType[x].key].nums[y].result = 'cancel'
+              info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
+              lotto.push(info.boughtLottery[betType[x].key].nums[y])
+            }
           }
         }
-      }
-    } else {
-      for (let x = 0; x < betType.length; x++) {
-        if (info.boughtLottery[betType[x].key]) {
-          for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
-            info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
-            lotto.push(info.boughtLottery[betType[x].key].nums[y])
+        break
+      case 'return' :
+        for (let x = 0; x < betType.length; x++) {
+          if (info.boughtLottery[betType[x].key]) {
+            for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
+              info.boughtLottery[betType[x].key].nums[y].result = 'return'
+              info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
+              lotto.push(info.boughtLottery[betType[x].key].nums[y])
+            }
           }
         }
-      }
+        break
+      default:
+        for (let x = 0; x < betType.length; x++) {
+          if (info.boughtLottery[betType[x].key]) {
+            for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
+              info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
+              lotto.push(info.boughtLottery[betType[x].key].nums[y])
+            }
+          }
+        }
     }
     state.selectedLottoInfo = lotto
   },

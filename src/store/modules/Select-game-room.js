@@ -37,7 +37,6 @@ const actions = {
 
   setSelectedGame: async ({ commit, state, rootGetters }, payload) => {
     const info = prepareInfo(payload.gameKey)
-    console.log(info)
     payload.gameCloseNumber = await queryDocumentWhere(info.lottoCloseNumber, payload.gameKey, rootGetters['userEntity/userAffiliate_ID'])
     payload.gamePriceMax = await queryDocumentWhere(info.lottomax, payload.gameKey, rootGetters['userEntity/userAgent'])
     payload.limitPerNumber = await getLottoLimitPerNumber(info.lottoLimited, rootGetters['userEntity/userAgent'])
