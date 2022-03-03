@@ -13,5 +13,6 @@ export default {
   playgame: 'แทงหวย',
   Result: 'ผลรางวัล',
   playHistory: 'โพยหวย',
-  number_memo: 'สร้างเลขชุด'
+  number_memo: 'สร้างเลขชุด',
+  ticketInfo: 'ข้อมูลโพยหวย'
 }

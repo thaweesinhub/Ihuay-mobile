@@ -194,7 +194,9 @@ export async function getTicketHistory (uid) {
   const querySnapshot = await getDocs(q)
   if (!querySnapshot.empty) {
     querySnapshot.forEach((doc) => {
-      arr.push(doc.data())
+      const newObj = { ...doc.data() }
+      newObj.docID = doc.id
+      arr.push(newObj)
     })
     return arr
   } else {

@@ -664,7 +664,7 @@ export default {
   },
   methods: {
     handleOnComplete (value) {
-      let isnum = /^\d+$/.test(value);
+      const isnum = /^\d+$/.test(value)
       if (isnum) {
         if (!this.selectedAddOn) {
           this.addNumber(value, this.selectType)
@@ -916,7 +916,8 @@ export default {
       const gameName = this.$store.getters['SelectedGameRoom/getSelectedGame'].gameName
       const userID = this.$store.getters['userEntity/userID']
       await Promise.all([
-        await addCreditTransaction('System',
+        await addCreditTransaction(
+          this.$store.getters['userEntity/username'],
           this.$store.getters['userEntity/username'],
           `แทงพนัน หวย ${gameName} / ${moment().locale('th').format('DD/MM/YYYY HH:mm')}  #${gameRef}`,
           sum,
