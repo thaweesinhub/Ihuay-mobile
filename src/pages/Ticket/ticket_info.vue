@@ -56,7 +56,7 @@
               </div>
               <q-separator/>
               <div class="flex-center flex q-mt-md">
-                <div v-if="lottoInfo.STATUS !== 'waiting' && lottoInfo.STATUS !== 'return'">
+                <div v-if="lottoInfo.STATUS !== 'waiting' && lottoInfo.STATUS !== 'return' && lottoInfo.STATUS !== 'cancel'">
                   <p v-if="findSum(lottoInfo.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(lottoInfo.boughtLottery)}}</p>
                   <p v-else-if="findSum(lottoInfo.boughtLottery) < 0" class="text-h6 text-negative ">฿ {{findSum(lottoInfo.boughtLottery)}}</p>
                 </div>
@@ -77,7 +77,7 @@
                 <div class="row">
                   <div class="col"/>
                   <div class="col">
-                    <div v-if="item.STATUS !== 'cancel' && lottoInfo.STATUS !== 'return'">
+                    <div v-if="lottoInfo.STATUS !== 'cancel' && lottoInfo.STATUS !== 'return'">
                       <div v-if="item.STATUS === 'waiting'" class="bg-warning q-pa-xs rounded-borders flex flex-center  q-ma-xs">
                         <span class="">รอผล</span>
                       </div>
@@ -91,7 +91,7 @@
                         <span class="">คืนโพย</span>
                       </div>
                     </div>
-                    <div v-else-if="item.STATUS === 'cancel'" class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">
+                    <div v-else-if="lottoInfo.STATUS === 'cancel'" class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">
                       <span class="">ยกเลิก</span>
                     </div>
                     <div v-else-if="lottoInfo.STATUS === 'return'" class="bg-negative q-pa-xs rounded-borders flex flex-center  q-ma-xs">

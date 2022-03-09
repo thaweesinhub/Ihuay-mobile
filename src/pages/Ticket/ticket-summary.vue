@@ -199,7 +199,7 @@
                   </div>
                   <q-separator/>
                   <div class="flex-center flex q-mt-md">
-                    <div v-if="item.STATUS !== 'cancel' && item.STATUS !== 'return' ">
+                    <div v-if="item.STATUS !== 'cancel' && item.STATUS !== 'return' && item.STATUS !== 'waiting'">
                       <p v-if="findSum(item.boughtLottery) > 0" class="text-positive text-h6">฿ +{{findSum(item.boughtLottery)}}</p>
                       <p v-else class="text-h6 text-negative ">฿ {{findSum(item.boughtLottery)}}</p>
                     </div>
