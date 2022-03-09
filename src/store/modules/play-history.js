@@ -9,6 +9,7 @@ const state = {
   selected: null,
   selectedLottoInfo: null,
   forPlayGame: null,
+
   tab: 'wait'
 }
 
@@ -35,7 +36,8 @@ const mutations = {
         for (let x = 0; x < betType.length; x++) {
           if (info.boughtLottery[betType[x].key]) {
             for (let y = 0; y < info.boughtLottery[betType[x].key].nums.length; y++) {
-              info.boughtLottery[betType[x].key].nums[y].result = info.result.calculateResult[betType[x].key]
+              console.log(info)
+              info.boughtLottery[betType[x].key].nums[y].result = info.result[betType[x].key]
               info.boughtLottery[betType[x].key].nums[y].key = betType[x].key
               lotto.push(info.boughtLottery[betType[x].key].nums[y])
             }

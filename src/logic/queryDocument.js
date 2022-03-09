@@ -28,35 +28,42 @@ export function documentDate () {
 
 export function lottoCreateOnFirstAndSixteen () {
   if (moment().locale('th').date() <= 16) {
-    // ? check ว่า ถึงวันที่ 9 ละยัง ถ้าถึงเเล้วก็จะใช้ doc ของวันที่ 9
-    // ? ถ้ายังไม่ถึงก็จะใช้ของเดือนที่เเล้ว
-    if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
-      return 'DATE_'.concat(
-        moment()
-          .date(1)
-          .subtract(7, 'day')
-          .locale('th')
-          .format('DD-MM-YYYY')
-      )
-    } else {
-      return 'DATE_'.concat(
-        moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
-      )
-    }
-  } else {
-    // ? IF เลย 16 มาเเล้ว
-    // ? check ว่าถึงวันที่ doc ของงวดใหม่จะถูกสร้างรึยีง ถ้าสร้างเเล้วก็ไปใช้ของอันใหม่
-    if (moment().locale('th').date() <= moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').date()) {
-      // ? ถ้า ยังไม่ถึงวันก็กลับไปใช้อันเก่า
-      return 'DATE_'.concat(
-        moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
-      )
-    } else {
-      return 'DATE_'.concat(
-        moment().add('month').date(1).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
-      )
-    }
+    return 'DATE_'.concat(moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY'))
+  } else if (moment().locale('th').date() >= 16 &&
+    moment().locale('th').date() <= moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').date()) {
+
+    return 'DATE_'.concat(moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').format('DD-MM-YYYY'))
   }
+  // if (moment().locale('th').date() <= 16) {
+  //   // ? check ว่า ถึงวันที่ 9 ละยัง ถ้าถึงเเล้วก็จะใช้ doc ของวันที่ 9
+  //   // ? ถ้ายังไม่ถึงก็จะใช้ของเดือนที่เเล้ว
+  //   if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
+  //     return 'DATE_'.concat(
+  //       moment()
+  //         .date(1)
+  //         .subtract(7, 'day')
+  //         .locale('th')
+  //         .format('DD-MM-YYYY')
+  //     )
+  //   } else {
+  //     return 'DATE_'.concat(
+  //       moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
+  //     )
+  //   }
+  // } else {
+  //   // ? IF เลย 16 มาเเล้ว
+  //   // ? check ว่าถึงวันที่ doc ของงวดใหม่จะถูกสร้างรึยีง ถ้าสร้างเเล้วก็ไปใช้ของอันใหม่
+  //   if (moment().locale('th').date() <= moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').date()) {
+  //     // ? ถ้า ยังไม่ถึงวันก็กลับไปใช้อันเก่า
+  //     return 'DATE_'.concat(
+  //       moment().date(16).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
+  //     )
+  //   } else {
+  //     return 'DATE_'.concat(
+  //       moment().add('month').date(1).subtract(7, 'day').locale('th').format('DD-MM-YYYY')
+  //     )
+  //   }
+  // }
 }
 export function resultLottoCreateOnFirstAndSixteen () {
   if (moment().locale('th').date() <= 16) {
