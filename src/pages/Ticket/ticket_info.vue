@@ -201,7 +201,7 @@ export default {
           }
         }
       }
-      return wimSum - loseSum
+      return wimSum
     },
     handleReturnPoll () {
       const isBefore = moment().locale('th').isBefore(moment(this.lottoInfo.lottoCloseTime, 'DD/MM/YYYY HH:mm').subtract(15, 'minutes'))

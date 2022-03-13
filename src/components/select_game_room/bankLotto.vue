@@ -109,6 +109,9 @@ export default {
       await this.$router.push('playgame')
     }
   },
+  created () {
+    console.log(this.bank_lotto_room)
+  },
   computed: {
     bank_lotto_room () {
       return this.$store.getters['LottoGame/BankLottoRoom']

@@ -7,6 +7,7 @@ const IndexLottoCollection = collection(db, 'testIndexlotto')
 const NormalLottoCollection = collection(db, 'testLotto')
 const ThaiStockLottoCollection = collection(db, 'testIndexlotto')
 const JubyeekeeCollection = collection(db, 'JukyeekeeGameRoom')
+
 // const Number_memoCollection = collection(db, 'setNumber')
 
 export function documentDate () {
@@ -65,6 +66,7 @@ export function lottoCreateOnFirstAndSixteen () {
   //   }
   // }
 }
+
 export function resultLottoCreateOnFirstAndSixteen () {
   if (moment().locale('th').date() <= 16) {
     if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
@@ -94,21 +96,24 @@ export function resultLottoCreateOnFirstAndSixteen () {
 }
 
 export function LottoCreateOnSixteen () {
-  if (moment().locale('th').date() <= 16) {
-    if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
-      return 'DATE_'.concat(
-        moment().date(16).subtract(7, 'day').subtract(1, 'month').locale('th').format('DD-MM-YYYY')
-      )
-    } else {
-      return 'DATE_'.concat(
-        moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
-      )
-    }
-  } else {
-    return 'DATE_'.concat(
-      moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
-    )
-  }
+  return 'DATE_'.concat(
+    moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
+  )
+  // if (moment().locale('th').date() <= 16) {
+  //   if (moment().locale('th').date() <= moment().locale('th').date(16).subtract(7, 'day').date()) {
+  //     return 'DATE_'.concat(
+  //       moment().date(16).subtract(7, 'day').subtract(1, 'month').locale('th').format('DD-MM-YYYY')
+  //     )
+  //   } else {
+  //     return 'DATE_'.concat(
+  //       moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
+  //     )
+  //   }
+  // } else {
+  //   return 'DATE_'.concat(
+  //     moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY')
+  //   )
+  // }
 }
 
 export async function getIndexLotto (queryDate) {
@@ -117,7 +122,9 @@ export async function getIndexLotto (queryDate) {
     if (docSnap.exists()) {
       document = docSnap.data()
     }
-  }).catch((error) => { console.log(error) })
+  }).catch((error) => {
+    console.log(error)
+  })
   return document
 }
 
@@ -127,7 +134,9 @@ export async function getThaiStockLotto (queryDate) {
     if (docSnap.exists()) {
       document = docSnap.data()
     }
-  }).catch((error) => { console.log(error) })
+  }).catch((error) => {
+    console.log(error)
+  })
   return document
 }
 
@@ -137,7 +146,9 @@ export async function getJubyeekee (queryDate) {
     if (docSnap.exists()) {
       document = docSnap.data()
     }
-  }).catch((error) => { console.log(error) })
+  }).catch((error) => {
+    console.log(error)
+  })
   return document
 }
 
@@ -149,7 +160,9 @@ export async function getNormalLotto (queryDate) {
     } else {
       return null
     }
-  }).catch((error) => { console.log(error) })
+  }).catch((error) => {
+    console.log(error)
+  })
   return document
 }
 

@@ -275,7 +275,7 @@ export default {
           }
         }
       }
-      const sum = wimSum - loseSum
+      const sum = wimSum
       return sum
     },
     async gotoNextPage (item) {

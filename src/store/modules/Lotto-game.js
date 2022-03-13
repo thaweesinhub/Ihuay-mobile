@@ -128,8 +128,8 @@ const actions = {
               docID: LottoCreateOnSixteen(),
               unique_key: baccLotto[BankLotto[x].key].unique_key,
               display_close_date_time: baccLotto[BankLotto[x].key].display_close_date_time,
-              unixTimeLeft: getUnixValue(baccLotto[BankLotto[x].key].for_countdown),
-              isOpen: checkIfTimeAlredyOver(baccLotto[ThaiLotto[x].key].for_countdown, baccLotto[ThaiLotto[x].key].STATUS)
+              unixTimeLeft: getUnixValue(baccLotto[BankLotto[x].key].display_close_date_time),
+              isOpen: checkIfTimeAlredyOver(baccLotto[ThaiLotto[x].key].display_close_date_time, baccLotto[ThaiLotto[x].key].STATUS)
             })
           }
         }
