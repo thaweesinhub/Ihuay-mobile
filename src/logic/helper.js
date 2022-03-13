@@ -42,12 +42,12 @@ export function covertBetTypeENGtoTH (betType) {
   }
 }
 
-export function checkIfTimeAlredyOver (closeTime) {
-  return moment(closeTime, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf() > 0
+export function checkIfTimeAlredyOver (closeTime, STATUS) {
+  if (STATUS === 'open') { return moment(closeTime, 'DD/MM/YYYY HH:mm').valueOf() - moment().locale('th').valueOf() > 0 } else { return 0 }
 }
 
 export function getUnixValue (time) {
-  return moment(time, 'MM/DD/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
+  return moment(time, 'DD/MM/YYYY HH:mm').valueOf() - moment().locale('th').valueOf()
 }
 
 export function inRange (x, min, max) {
@@ -89,7 +89,9 @@ export const betType = [
   { key: 'two_up' },
   { key: 'two_down' },
   { key: 'run_up' },
-  { key: 'run_down' }
+  { key: 'run_down' },
+  { key: 'three_front' },
+  { key: 'three_back' }
 ]
 
 export function filterResultedLotto (payload) {

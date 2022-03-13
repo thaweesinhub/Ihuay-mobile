@@ -1,8 +1,9 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from 'src/boot/firebase'
 import { Notify } from 'quasar'
 import { getMessageFromErrorCode, NotifyError } from 'src/logic/handler'
+
 const defaultState = () => {
   return {
     username: null,
@@ -46,7 +47,10 @@ const actions = {
   setUserID: ({ commit }, userID) => {
     commit('SET_USER_ID', userID)
   },
-  login: ({ commit, dispatch }, authData) => {
+  login: ({
+    commit,
+    dispatch
+  }, authData) => {
     signInWithEmailAndPassword(getAuth(), authData.email, authData.password)
       .then((res) => {
         commit('SET_USER_ID', { userID: res.user.uid })
@@ -65,16 +69,25 @@ const actions = {
         return 'xxxxxxxxxxx'
       })
   },
-  fetchUser: ({ commit, state }) => {
-    const docRef = doc(db, 'users', state.userID)
-    getDoc(docRef).then(res => {
-      if (res.exists()) {
-        commit('SET_USER_CREDIT', { user_Credit: res.data().credit })
-        commit('SET_USER', { username: res.data().username })
-        commit('SET_USER_AGENT', res.data().agentID)
-        commit('SET_USER_AFFILIATE_ID', res.data().affiliate_ID)
-      } else { console.log('no doc') }
-    }).catch(error => console.log(error))
+  fetchUser: ({
+    commit,
+    state
+  }) => {
+    onSnapshot(doc(db, 'users', state.userID), (doc) => {
+      commit('SET_USER_CREDIT', { user_Credit: doc.data().credit })
+      commit('SET_USER', { username: doc.data().username })
+      commit('SET_USER_AGENT', doc.data().agentID)
+      commit('SET_USER_AFFILIATE_ID', doc.data().affiliate_ID)
+    })
+    // const docRef = doc(db, 'users', state.userID)
+    // getDoc(docRef).then(res => {
+    //   if (res.exists()) {
+    //     commit('SET_USER_CREDIT', { user_Credit: res.data().credit })
+    //     commit('SET_USER', { username: res.data().username })
+    //     commit('SET_USER_AGENT', res.data().agentID)
+    //     commit('SET_USER_AFFILIATE_ID', res.data().affiliate_ID)
+    //   } else { console.log('no doc') }
+    // }).catch(error => console.log(error))
   },
   resetUserState: ({ commit }) => {
     Notify.create({

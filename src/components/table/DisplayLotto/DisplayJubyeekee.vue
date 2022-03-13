@@ -3,7 +3,7 @@
     grid
     class="q-pa-md gt-sm"
     card-class="bg-primary text-white"
-    title="หวยหุ้นไทย"
+    title="หก"
     :rows="jubyeekeeLotto_Row"
     :columns="LottoColumns"
     row-key="name"

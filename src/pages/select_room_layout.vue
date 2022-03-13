@@ -24,6 +24,7 @@
       <div v-if="changeView === 'lotto'">
         <gorverment-lotto/>
         <bank-lotto/>
+        <foreign-lotto/>
         <thai-index/>
         <index-lotto/>
       </div>
@@ -42,6 +43,7 @@ import gorvermentlotto from 'components/select_game_room/gorverment_lotto'
 import bankLotto from 'components/select_game_room/bankLotto'
 import thaiIndexLotto from 'components/select_game_room/thaiIndexLotto'
 import JubyeekeeLotto from 'components/select_game_room/JubyeekeeLotto'
+import foreignLotto from 'components/select_game_room/foreign_lotto'
 
 export default {
   name: 'select_room_layout',
@@ -50,7 +52,9 @@ export default {
     indexLotto: indexLottoRoom,
     gorvermentLotto: gorvermentlotto,
     ThaiIndex: thaiIndexLotto,
-    bankLotto: bankLotto
+    bankLotto: bankLotto,
+    foreignLotto: foreignLotto
+
   },
 
   methods: {
@@ -58,6 +62,7 @@ export default {
       this.$store.dispatch('LottoGame/getIndexLottoRoom')
       this.$store.dispatch('LottoGame/getGovernmentLotto')
       this.$store.dispatch('LottoGame/getBankLotto')
+      this.$store.dispatch('LottoGame/getForeignLotto')
       this.$store.dispatch('LottoGame/getThaiLotto')
       this.$store.dispatch('LottoGame/getJubyeekee')
     },
