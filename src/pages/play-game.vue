@@ -958,7 +958,6 @@ export default {
           await Promise.all([
             await this.updateUserCredit(gameRef),
             await this.updatePriceRateinDB(),
-            await this.$store.dispatch('userEntity/fetchUser'),
             await this.$router.push('/ticket_summary')
           ])
         } else { NotifyError('เกิดข้อผิดพลาดขึ้น') }

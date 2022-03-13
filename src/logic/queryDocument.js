@@ -32,7 +32,6 @@ export function lottoCreateOnFirstAndSixteen () {
     return 'DATE_'.concat(moment().locale('th').date(16).subtract(7, 'day').format('DD-MM-YYYY'))
   } else if (moment().locale('th').date() >= 16 &&
     moment().locale('th').date() <= moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').date()) {
-
     return 'DATE_'.concat(moment().locale('th').add(1, 'month').date(1).subtract(7, 'day').format('DD-MM-YYYY'))
   }
   // if (moment().locale('th').date() <= 16) {
