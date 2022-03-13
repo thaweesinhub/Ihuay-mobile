@@ -2,8 +2,8 @@
   <q-table
     grid
     card-class="bg-primary text-white"
-    title=""
-    :rows="goverment_lotto_room"
+    title="หวยหุ้นต่างประเทศ"
+    :rows="bank_lotto_room"
     :columns="LottoColumns"
     row-key="name"
     no-data-label="I didn't find anything for you"
@@ -26,9 +26,9 @@
               <img
                 style="width: 30px; height: 20px; margin-top: 1%"
                 v-bind:src="
-                                        iconPic(props.row.key, `index`)
+                                        iconPic(props.row.key, `malay`)
                                       "
-                :alt="iconPic(props.row.key, `index`)"
+                :alt="iconPic(props.row.key, `malay`)"
               />
               <br/>
               <strong>{{ props.row.name }}</strong>
@@ -39,7 +39,7 @@
             <q-separator />
             <q-card-section class="flex flex-center" >
               <div v-if="props.row.unixTimeLeft > 0 && props.row.isOpen === true">
-                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex, 'govermentLotto')">
+                <vue-countdown :time="props.row.unixTimeLeft" :interval="1000" v-slot="{ totalHours, minutes, seconds }" @end="closeRoom(props.rowIndex, 'bankLotto')">
                   <span class="text-subtitle1" >
                     เหลือเวลา {{ totalHours }} ชั่วโมง  {{ minutes }} นาที {{ seconds }} วินาที
                   </span>
@@ -55,7 +55,7 @@
 
     </template>
     <template v-slot:top>
-      <span class="text-h5">หวยรัฐบาล</span>
+      <span class="text-h5">หวยต่างประเทศ</span>
       <q-space />
     </template>
   </q-table>
@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: 'gorverment_lotto',
+  name: 'foreign_lotto',
   data () {
     return {
       pagination: {
@@ -84,19 +84,13 @@ export default {
       } else if (type === 'malay') {
         images = require.context('src/assets/countryIcon', false, /\.png$/)
         return images('./' + lottoName + '.png')
-      } else if (type === 'bank') {
-        images = require.context('src/assets/bankIcon', false, /\.jpeg$/)
-        return images('./' + lottoName + '.jpeg')
-      } else if (type === 'Jukyeekee') {
-        images = require.context('src/assets/jubyeekee', false, /\.png$/)
-        return images('./' + lottoName + '.png')
       }
     },
     closeRoom (index, type) {
       this.$store.dispatch('LottoGame/setTimeoutLotto', { type: type, index: index })
     },
     // eslint-disable-next-line camelcase
-    async gotoPlay (key, name, close_date_time, unique_key, doc) {
+    async gotoPlay (key, name, close_date_time, unique_key, doc, dateTime) {
       await this.$store.dispatch('SelectedGameRoom/setSelectedGame',
         {
           gameName: name,
@@ -104,14 +98,15 @@ export default {
           gameTimeLeft: close_date_time,
           gameUnique_key: unique_key,
           gameDocID: doc,
-          gameType: 'lotto'
+          gameType: 'lotto',
+          gameCloseDateTime: dateTime
         })
       await this.$router.push('playgame')
     }
   },
   computed: {
-    goverment_lotto_room () {
-      return this.$store.getters['LottoGame/GovermentLottoRoom']
+    bank_lotto_room () {
+      return this.$store.getters['LottoGame/ForeignLottoRoom']
     }
   }
 }

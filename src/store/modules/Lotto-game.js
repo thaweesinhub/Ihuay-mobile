@@ -71,13 +71,29 @@ const actions = {
     }
     commit('SET_INDEX_LOTTO_GAME', arr)
   },
+  getForeignLotto: async ({ commit }) => {
+    const Lotto = []
+    const lotto = await getNormalLotto(documentDate())
+    if (lotto.lotto_maylasia) {
+      Lotto.push({
+        name: lotto.lotto_maylasia.name,
+        key: 'lotto_maylasia',
+        for_countdown: lotto.lotto_maylasia.for_countdown,
+        unique_key: lotto.lotto_maylasia.unique_key,
+        docID: documentDate(),
+        display_close_date_time: lotto.lotto_maylasia.display_close_date_time,
+        unixTimeLeft: getUnixValue(lotto.lotto_maylasia.display_close_date_time),
+        isOpen: checkIfTimeAlredyOver(lotto.lotto_maylasia.display_close_date_time, lotto.lotto_maylasia.STATUS)
+      })
+    }
+    commit('SET_FOREIGN_LOTTO_GAME', Lotto)
+  },
   getGovernmentLotto: async ({ commit }) => {
     const lotto = await getNormalLotto(lottoCreateOnFirstAndSixteen())
-    console.log(lottoCreateOnFirstAndSixteen())
     const Lotto = []
     if (lotto) {
       for (let x = 0; x < ThaiLotto.length; x++) {
-        if (lotto[ThaiLotto[x].key] !== undefined) {
+        if (lotto[ThaiLotto[x].key]) {
           if (ThaiLotto[x].key === 'lotto_thai_gorverment') {
             Lotto.push({
               name: lotto[ThaiLotto[x].key].name,
@@ -87,7 +103,7 @@ const actions = {
               docID: lottoCreateOnFirstAndSixteen(),
               display_close_date_time: lotto[ThaiLotto[x].key].display_close_date_time,
               unixTimeLeft: getUnixValue(lotto[ThaiLotto[x].key].display_close_date_time),
-              isOpen: checkIfTimeAlredyOver(lotto[ThaiLotto[x].key].display_close_date_time , lotto[ThaiLotto[x].key].STATUS)
+              isOpen: checkIfTimeAlredyOver(lotto[ThaiLotto[x].key].display_close_date_time, lotto[ThaiLotto[x].key].STATUS)
             })
           }
         } else {
@@ -99,7 +115,6 @@ const actions = {
           //   unixTimeLeft: getUnixValue('12/12/1994 12:44'),
           //   isOpen: false
           // })
-          console.log('error')
         }
       }
     } else {
@@ -110,7 +125,6 @@ const actions = {
         unixTimeLeft: getUnixValue('12/12/1994 12:44'),
         isOpen: false
       })
-      console.log('error')
     }
     commit('SET_GOVERNMNET_LOTTO_GAME', Lotto)
   },
@@ -222,6 +236,9 @@ const getters = {
   },
   BankLottoRoom: state => {
     return state.bankLotto
+  },
+  ForeignLottoRoom: state => {
+    return state.foreignLotto
   },
   ThaiStockRoom: state => {
     return state.thaiStockLotto
